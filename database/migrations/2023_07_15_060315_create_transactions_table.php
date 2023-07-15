@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->collation('utf16_general_ci');
-            $table->enum('account_type', ['individual', 'business'])->default('individual');
-            $table->double('balance')->default(0);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            
+            $table->foreignId('user_id')->constrained('users');
+            $table->enum('transaction_type', ['deposit', 'withdraw']);
+            $table->double('amount')->default(0);
+            $table->decimal('fee', 10, 2)->default(0);
+            $table->date('date');
+
             $table->unsignedTinyInteger('status')->default(0)->comment('0=Inactive,1=Active');
             $table->timestamp('created_at')->nullable();
             $table->unsignedInteger('created_by')->nullable();
@@ -29,6 +27,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('deleted')->default(0)->comment('1=deleted');
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();
+
         });
     }
 
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('transactions');
     }
 };
