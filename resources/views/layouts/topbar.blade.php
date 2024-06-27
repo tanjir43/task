@@ -192,7 +192,7 @@
                 </span>
                 <span>
                     <span class="account-user-name">{{ $user->name }}</span>
-                    <span class="account-position">{{ ConvertToLang($user->role) }}</span>
+                    <span class="account-position">{{ $user->role->name }}</span>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">

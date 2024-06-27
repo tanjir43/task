@@ -25,10 +25,10 @@
         <div class="card card-body border-0 shadow-sm pb-1 me-lg-1" style="background-color:#bee4bb " >
             <div class="d-flex d-md-block d-lg-flex align-items-start pt-lg-2 mb-4"><img class="rounded-circle" src="{{asset('images/rs_logo.png')}}" width="48" alt="John doe">
             <div class="pt-md-2 pt-lg-0 ps-3 ps-md-0 ps-lg-3">
-                <h2 class="fs-lg mb-0">{{$current_user->employee->name}}</h2>
+                <h2 class="fs-lg mb-0">{{$current_user->name}}</h2>
                 <ul class="list-unstyled fs-sm mt-3 mb-0">
-                <li><a class="nav-link fw-normal p-0" href="tel:{{$current_user->phone}}"><i class="fi-phone opacity-60 me-2"></i>{{$current_user->employee->phone ?? ''}}</a></li>
-                <li><a class="nav-link fw-normal p-0" href="mailto:{{$current_user->email}}"><i class="fi-mail opacity-60 me-2"></i>{{$current_user->employee->email ?? ''}}</a></li>
+                <li><a class="nav-link fw-normal p-0" href="tel:{{$current_user->phone}}"><i class="fi-phone opacity-60 me-2"></i>{{$current_user->phone ?? ''}}</a></li>
+                <li><a class="nav-link fw-normal p-0" href="mailto:{{$current_user->email}}"><i class="fi-mail opacity-60 me-2"></i>{{$current_user->email ?? ''}}</a></li>
                 </ul>
             </div>
             @if (!empty($attendance_detail->in_time))
@@ -66,12 +66,12 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="pe-2">
                 <label class="form-label fw-bold">Full name</label>
-                <div id="name-value">{{$current_user->employee->name}}</div>
+                <div id="name-value">{{$current_user->name}}</div>
                 </div>
                 <div class="me-n3" data-bs-toggle="tooltip" title="Edit"><a class="nav-link py-0" href="#name-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
             </div>
             <div class="collapse" id="name-collapse" data-bs-parent="#personal-info">
-                <input class="form-control mt-3" name="name" type="text" data-bs-binded-element="#name-value" placeholder="{{$current_user->employee->name}}" data-bs-unset-value="Not specified" value="{{old($current_user->employee->name)}}">
+                <input class="form-control mt-3" name="name" type="text" data-bs-binded-element="#name-value" placeholder="{{$current_user->name}}" data-bs-unset-value="Not specified" value="{{old($current_user->name)}}">
             </div>
             </div>
             <!-- Email-->
@@ -79,12 +79,12 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="pe-2">
                 <label class="form-label fw-bold">Email</label>
-                <div id="email-value">{{$current_user->employee->email}}</div>
+                <div id="email-value">{{$current_user->email}}</div>
                 </div>
                 <div class="me-n3" data-bs-toggle="tooltip" title="Edit"><a class="nav-link py-0" href="#email-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
             </div>
             <div class="collapse" id="email-collapse" data-bs-parent="#personal-info">
-                <input class="form-control mt-3" name="email" type="email" data-bs-binded-element="#email-value" data-bs-unset-value="Not specified" placeholder="{{$current_user->employee->email}}" value="{{old($current_user->employee->email)}}">
+                <input class="form-control mt-3" name="email" type="email" data-bs-binded-element="#email-value" data-bs-unset-value="Not specified" placeholder="{{$current_user->email}}" value="{{old($current_user->email)}}">
             </div>
             </div>
             <!-- Phone number-->
@@ -92,12 +92,12 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div class="pe-2">
                 <label class="form-label fw-bold">Phone number</label>
-                <div id="phone-value">{{$current_user->employee->phone ?? ''}}</div>
+                <div id="phone-value">{{$current_user->phone ?? ''}}</div>
                 </div>
                 <div class="me-n3" data-bs-toggle="tooltip" title="Edit"><a class="nav-link py-0" href="#phone-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
             </div>
             <div class="collapse" id="phone-collapse" data-bs-parent="#personal-info">
-                <input class="form-control mt-3" type="text" data-bs-binded-element="#phone-value" name="phone" placeholder="{{$current_user->employee->phone ?? ''}}" data-bs-unset-value="Not specified" value="{{old($current_user->employee->phone)}}">
+                {{-- <input class="form-control mt-3" type="text" data-bs-binded-element="#phone-value" name="phone" placeholder="{{$current_user->phone ?? ''}}" data-bs-unset-value="Not specified" value="{{old($current_user->phone)}}"> --}}
             </div>
             </div>
             <!-- Company name-->

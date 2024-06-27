@@ -64,9 +64,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Role::class)->withTrashed();
     }
-
-    public function employee()
-    {
-        return $this->belongsTo(Employee::class)->withTrashed();
-    }
 }

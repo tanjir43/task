@@ -24,7 +24,7 @@
                             class="side-nav-link {{ $active_menu == $id ? 'active' : '' }}"
                         >
                             <i class="{{ $menu->web_icon }}"></i>
-                            <span> {{ ConvertToLang($menu) }} </span>
+                            <span> {{ $menu->name }} </span>
                             <span class="menu-arrow"></span>
                         </a>
                     @else
@@ -32,7 +32,7 @@
                             class="side-nav-link {{ $active_menu == $id ? 'active' : '' }}"
                         >
                             <i class="{{ $menu->web_icon }}"></i>
-                            <span> {{ ConvertToLang($menu) }} </span>
+                            <span> {{ $menu->name }} </span>
                         </a>
                     @endif
                     
@@ -42,7 +42,7 @@
                                 @foreach ($menu->childs as $child)
                                     <?php $sid = str_replace('.','_',$child->web); ?>
                                     <li class="{{ $sid == $active_submenu ? 'menuitem-active' : '' }}" style="padding-left: 30px">
-                                        <a href="{{ route($child->web) }}">{{ ConvertToLang($child) }}</a>
+                                        <a href="{{ route($child->web) }}">{{ $child->name }}</a>
                                     </li>
                                 @endforeach
                             </ul>
