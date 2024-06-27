@@ -26,11 +26,6 @@ return new class extends Migration
 
             $table->foreignId('role_id')->nullable()->constrained('roles');
             
-            $table->string('google_id')->nullable();
-
-            $table->string('default_lan')->default('en');
-
-            //$table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
             $table->integer('created_by')->references('id')->on('users');
@@ -40,44 +35,24 @@ return new class extends Migration
 
         DB::table('users')->insert([
             [
-                'name'              =>  'Developer',
-                'email'             =>  'administrator@administrator.com',
-                'email_verified_at' =>  now(),
-                'password'          =>  '$2y$10$S5sOVa5ExZ7sMDxFMvZKGeyPEnogrIsNV43CFefG5Y/LRDR/PPnnm', #developer@rowshansoft.com
-                'block'             =>  false,
-
-                'default_lan'       =>  'en',
-                'role_id'           =>  '1',
-
-                'created_at'        =>  now(),
-                'updated_at'        =>  now(),
-                'created_by'        =>  '0'
-            ],
-            [
                 'name'              =>  'Admin',
                 'email'             =>  'admin@admin.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  '$2y$10$Ra1gm7.5KspMfuH6Ovc0nOToG1CKKCtnCBJXDwbYaX2MYY9tdyUJK', #admin@admin.com
                 'block'             =>  false,
-
-                'default_lan'       =>  'en',
-                'role_id'           =>  '2',
-
+                'role_id'           =>  '1',
                 'created_at'        =>  now(),
                 'updated_at'        =>  now(),
                 'created_by'        =>  '0'
             ],
+
             [
                 'name'              =>  'User',
                 'email'             =>  'user@user.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  '$2y$10$qgsvHOwuCHOrnksxg2drMux5vRRwQHI1SfBkZFOfektDu0XNyhOWO', #user@user.com
                 'block'             =>  false,
-
-                'default_lan'       =>  'en',
                 'role_id'           =>  '3',
-                #'employee_id'       =>  '1',
-
                 'created_at'        =>  now(),
                 'updated_at'        =>  now(),
                 'created_by'        =>  '0'

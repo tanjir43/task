@@ -26,7 +26,7 @@ class Blade
                 $user = Auth::user();
                 $permissions = json_decode($user->role->permissions);
                 
-                $whereNotIn = [1,2,3,4,5];
+                $whereNotIn = [1,2,3];
                 $whereIn = array_diff($permissions,$whereNotIn);
                 
                 $menus = Menu::whereNull('parent')
