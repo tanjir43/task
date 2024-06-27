@@ -2,40 +2,32 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-
-    public $timestamps = false;
-
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'account_type',
-        'balance',
-
-        'status',
-        'created_at',
-        'created_by',
-        'updated_at',
-        'updated_by',
-        'deleted',
-        'deleted_at',
-        'deleted_by',
+        'name','email','password',
+        'block','employee_id','default_lan','google_id',
+        'role_id','created_by','updated_by'
     ];
 
     /**
@@ -46,6 +38,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -55,21 +49,24 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 
-    public function createdby():BelongsTo
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
+    public function role()
     {
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(Role::class)->withTrashed();
     }
 
-    public function updatedby():BelongsTo
+    public function employee()
     {
-        return $this->belongsTo(User::class,'updated_by');
-    }
-
-    public function deletedby():BelongsTo
-    {
-        return $this->belongsTo(User::class,'deleted_by');
+        return $this->belongsTo(Employee::class)->withTrashed();
     }
 }

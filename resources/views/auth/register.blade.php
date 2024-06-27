@@ -1,43 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
-</head>
-<body>
-    <section>
-        <div class="row">
-            <div class="container">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header" style="text-align: center">Register</div>
-                            <div class="card-body">
-                                <form action="{{ route('auth.register.store')}}" method="POST">
-                                    @csrf
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" placeholder="Name" value="{{ old('name') }}">
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
-                                    <label for="password">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="Password">
-                                    <label for="confirm">Password Confirmation</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Password Confirmation">
-                                    <label for="type">Account Type</label>
-                                    <select name="type" id="type">
-                                        <option value="individual">Individual</option>
-                                        <option value="businesss">Business</option>
-                                    </select>
-                                    <input type="submit" value="Register">
-                                </form>
+<x-guest-layout>
+    <x-authentication-card>
+        <x-slot name="logo">
+            <x-authentication-card-logo />
+        </x-slot>
+
+        <x-validation-errors class="mb-4" />
+
+        <h1 class="text-center" style="font-size: 32px;font-family:Figtree, ui-sans-serif;color:rgb(121, 121, 121)">{{ __('msg.register_your_account') }}</h1>
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div>
+                <x-label for="name" value="{{ __('Name') }}" />
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            </div>
+
+            <div>
+                <x-label for="phone" value="{{ __('msg.phone') }}" />
+                <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required autofocus autocomplete="phone" />
+            </div>
+
+            <div>
+                <x-label for="nid" value="{{ __('msg.nid') }}" />
+                <x-input id="nid" class="block mt-1 w-full" type="text" name="nid" :value="old('nid')" required autofocus autocomplete="nid" />
+            </div>
+
+            <div class="mt-4">
+                <x-label for="email" value="{{ __('Email') }}" />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            </div>
+
+            <div class="mt-4">
+                <x-label for="password" value="{{ __('Password') }}" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            </div>
+
+            <div class="mt-4">
+                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            </div>
+
+            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div class="mt-4">
+                    <x-label for="terms">
+                        <div class="flex items-center">
+                            <x-checkbox name="terms" id="terms" required />
+
+                            <div class="ml-2">
+                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
+                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
+                                ]) !!}
                             </div>
                         </div>
-                    </div>
+                    </x-label>
                 </div>
+            @endif
+
+            <div class="flex items-center justify-end mt-4">
+                <a href="{{ url('authorized/google') }}" class="mr-3"><i class="fa-brands fa-google"></i></a>
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                    {{ __('Already registered?') }}
+                </a>
+
+                <x-button class="ml-4">
+                    {{ __('Register') }}
+                </x-button>
             </div>
-        </div>
-    </section>
-</body>
-</html>
+        </form>
+    </x-authentication-card>
+</x-guest-layout>

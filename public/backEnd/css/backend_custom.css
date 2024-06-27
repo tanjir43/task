@@ -1,0 +1,244 @@
+.row-gap-24 {
+    row-gap: 24px;
+}
+.text-right {
+    text-align: right!important;
+}
+.student-add-form .nav-tabs {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid #415094;
+}
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+.student-add-form .nav-tabs .nav-link.active {
+    background: #cad5f3;
+    border-radius: 6px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #f8fafc;
+    border-color: #dee2e6 #dee2e6 #f8fafc;
+}
+.primary_file_uploader {
+    position: relative;
+}
+.primary_file_uploader .primary_input_field {
+    padding-bottom: 1px;
+}
+.primary_file_uploader .primary_input_field {
+    padding-bottom: 1px;
+}
+
+.primary_file_uploader input {
+    border: 1px solid rgba(130, 139, 178, 0.3) !important;
+    font-size: 14px;
+    color: #415094;
+    padding-left: 20px;
+    height: 46px;
+    border-radius: 4px !important;
+    width: 100%;
+    padding-right: 15px;
+    padding-bottom: 4px;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+}
+
+.primary_file_uploader button {
+    position: absolute;
+    right: 0;
+    border: 0;
+    top: 7px;
+    right: 7px;
+    padding: 0;
+    background: transparent;
+    z-index: 99;
+}
+
+.primary_file_uploader button {
+    z-index: 0 !important;
+}
+
+.primary_file_uploader button {
+    top: 8px !important;
+    right: 8px !important;
+}
+
+.primary-btn.fix-gr-bg {
+    background: -webkit-linear-gradient(90deg, var(--gradient_1) 0%, var(--gradient_2) 51%, var(--gradient_3) 100%) !important;
+    background: -moz-linear-gradient(90deg, var(--gradient_1) 0%, var(--gradient_2) 51%, var(--gradient_3) 100%) !important;
+    background: -o-linear-gradient(90deg, var(--gradient_1) 0%, var(--gradient_2) 51%, var(--gradient_3) 100%) !important;
+    background: -ms-linear-gradient(90deg, var(--gradient_1) 0%, var(--gradient_2) 51%, var(--gradient_3) 100%) !important;
+    background: linear-gradient(90deg, var(--gradient_1) 0%, var(--gradient_2) 51%, var(--gradient_3) 100%) !important;
+    color: #f1f1f1 !important;
+    /* background-size: 200% auto !important; */
+    -webkit-transition: all 0.4s ease 0s !important;
+    -moz-transition: all 0.4s ease 0s !important;
+    -o-transition: all 0.4s ease 0s !important;
+    transition: all 0.4s ease 0s !important;
+}
+
+.primary-btn.fix-gr-bg {
+    background:#415094 !important;
+}
+
+.primary-btn.small {
+    letter-spacing: 1px;
+    line-height: 30px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.primary-btn {
+    display: inline-block;
+    color: var(--base_color);
+    letter-spacing: 1px;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 40px;
+    padding: 0px 20px;
+    outline: none !important;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+input, .primary_select, .primary_file_uploader input, textarea, .note-editor.note-frame .note-editing-area .note-editable {
+    background: #ffffff !important;
+}
+
+.primary_file_uploader input {
+    border: 1px solid rgba(130, 139, 178, 0.3) !important;
+    font-size: 14px;
+    color: var(--base_color);
+    padding-left: 20px;
+    height: 46px;
+    border-radius: 30px;
+    width: 100%;
+    padding-right: 15px;
+    padding-bottom: 4px;
+}
+.loader_style {
+    margin-top: -30px;
+    padding-right: 25px;
+}
+
+.form-section {
+    background: #f5f5f561;
+    padding: 20px;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.stu-sub-head {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #415094;
+    font-weight: 500;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(65, 80, 148, 0.3);
+}
+
+.primary_input_label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #828bb2;
+    margin-bottom: 0;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 400;
+}
+
+.primary_select {
+    width: 100%;
+    border: 1px solid rgba(130, 139, 178, 0.3);
+    border-radius: 3px;
+    height: 46px;
+    line-height: 44px;
+    font-size: 13px;
+    color: var(--base_color);
+    padding: 0px 25px;
+    padding-left: 20px;
+    font-weight: 300;
+    border-radius: 4px;
+}
+
+option {
+    font-weight: normal;
+    display: block;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+    white-space: nowrap;
+}
+
+.primary_select .current {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-right: 16px;
+}
+
+.nice-select .list,
+.nice-select .nice-select-search-box,
+.nice-select,
+.nice-select .nice-select-search,
+.dropdown-menu,
+.datepicker.dropdown-menu {
+    background-color: #fff;
+}
+
+.nice-select .list,
+.nice-select .nice-select-search-box,
+.nice-select,
+.nice-select .nice-select-search,
+.dropdown-menu,
+.datepicker.dropdown-menu {
+    background-color: #fff;
+}
+
+.nice-select .list {
+    padding: 52px 0 0 !important;
+}
+
+.primary_select:after {
+    border-bottom: 0;
+    border-right: 0;
+    content: '';
+    display: block;
+    height: 10px;
+    margin-top: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 14px;
+    top: 10%;
+    -webkit-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+    width: auto;
+    right: 25px;
+    content: '\f0d7';
+    border: 0;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #828bb2;
+    font-size: 14px;
+    transform: translateY(-58%) rotate(0deg);
+}

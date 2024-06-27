@@ -1,0 +1,145 @@
+img.blog-comment-user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    border: 2px solid #ddd;
+}
+
+/* mobile display responsive */
+@media screen and (max-width: 768px) {
+    img.blog-comment-user-image {
+        width: 20px;
+        height: 20px;
+        border-radius: 100px;
+        border: 2px solid #ddd;
+    }
+    .btn-sm {
+        width: 10px !important;
+    }
+    .btn-sm-label {
+        font-size: 10px !important;
+        margin-top: 15px !important;
+        padding-left: 5px !important;
+    }
+    
+}
+
+
+.btn-comment-post {
+    background-size: 200%,1px!important;
+    background-color: #62a18b;
+    border: none;
+    font-size: 15px;
+    padding: 8px 20px;
+    font-weight: 600;
+    color: #fff!important;
+    border-radius: 7px;
+    width: 100%;
+}
+.blog-input-group-text {
+    background-color: transparent;
+}
+.input-group-text {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0.85rem .95rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.btn-sm {
+    width: 20px;
+}
+
+.btn-sm-label {
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+input#can_reply_no{
+    margin-left: 10px;
+}
+
+input#comment_type_d{
+    margin-left: 10px;
+}
+input#reply_type_a{
+    margin-left: 10px;
+}
+
+.bg-color-gray {
+    background-color: #fbfbfb;
+}
+
+.reply-row-comment {
+    background-color: #fbfbfb;
+}
+
+.text-all-replies {
+    font-size: 11px;
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #62a18b;
+}
+.custom-text-all-replies {
+    font-size: 11px;
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #62a18b;
+}
+.article-user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #636464;
+    text-decoration: none;
+}
+
+.article-comment-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: #62a18b;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.article-main-comment {
+    color: #636464;
+    font-size: 14px;
+}
+
+.total-comment-text {
+    color: #636464;
+    font-size: 14px;
+}
+
+.article-reply {
+    color: #636464;
+    font-size: 14px; 
+}
+
+.article-reply-name {
+    color: #636464;
+    font-size: 11px; 
+    margin-bottom: 0.75px !important;
+}
+.scrollable-div {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+ .custom-br-paddng-left {
+    margin-left: 33px !important;
+    width: 96% !important;
+ }
