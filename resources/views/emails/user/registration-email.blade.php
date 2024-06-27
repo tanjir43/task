@@ -12,7 +12,7 @@
 								<td class="h2 pb10" style="color:#ffffff; font-family:'Playfair Display', Georgia, serif; font-size:35px; line-height:46px; text-align:center; font-style:italic; padding-bottom:10px;"><multiline>Thank you for  your registration </multiline></td>
 							</tr>
 							<tr>
-								<td class="text pb30" style="color:#a3a3a3; font-family:'Playfair Display', Georgia, serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:30px;"><multiline>Your account is under observation. After reviewing your identity, we will let you know via email. Till then  thank's for your patience </multiline></td>
+								<td class="text pb30" style="color:#a3a3a3; font-family:'Playfair Display', Georgia, serif; font-size:16px; line-height:30px; text-align:center; padding-bottom:30px;"><multiline>We are thrilled to welcome you to the Techzu family!</multiline></td>
 							</tr>
 						</table>
 					</td>
@@ -22,7 +22,7 @@
 					<td align="center">
 						<table border="0" cellspacing="0" cellpadding="0" style="margin-top:15px;margin-bottom:15px;">
 							<tr>
-								<td class="text-button" style="border:2px solid #ffffff; color:#ffffff; font-family:'Playfair Display', Georgia, serif; font-size:14px; line-height:18px; text-align:center; font-weight:bold; padding:14px 20px; text-transform:uppercase; border-radius:10px;"><multiline><a href="{{route('login')}}" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;"><a href="{{route('home')}}">Retina Soft</a></span></a></multiline></td>
+								<td class="text-button" style="border:2px solid #ffffff; color:#ffffff; font-family:'Playfair Display', Georgia, serif; font-size:14px; line-height:18px; text-align:center; font-weight:bold; padding:14px 20px; text-transform:uppercase; border-radius:10px;"><multiline><a href="{{route('login')}}" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;"><span class="link-white" style="color:#ffffff; text-decoration:none;"><a href="{{route('home')}}">Techzu</a></span></a></multiline></td>
 							</tr>
 						</table>
 					</td>

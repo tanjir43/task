@@ -30,6 +30,9 @@ return new class extends Migration
 
             $table->integer('created_by')->references('id')->on('users');
             $table->integer('updated_by')->nullable()->references('id')->on('users');
+            $table->integer('deleted_by')->nullable()->references('id')->on('users');
+            
+            $table->softDeletes();
             $table->timestamps();
         });
 

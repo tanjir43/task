@@ -5,45 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginWithGoogleController;
 
-#articles
-Route::get('/','frontend\country\poland\articles\InformationController@index')->name('home');
-Route::get('/universities','frontend\country\poland\articles\UniversityController@index')->name('universities');
-Route::get('/ivac-procedure','frontend\country\poland\articles\IVACProcedureController@index')->name('ivac.procedure');
-Route::get('/vfs-procedure','frontend\country\poland\articles\VFSProcedureController@index')->name('vfs.procedure');
-Route::get('/banking-procedure','frontend\country\poland\articles\BankingProcedureController@index')->name('banking.procedure');
-Route::get('/univerisity-fee-vs-embassy-money','frontend\country\poland\articles\UniversityFeeVsEmbassyMoneyController@index')->name('university.embassy.money');
-
-#certificate
-Route::get('/tin-certificate','frontend\certificate\TinCertificateController@index')->name('tin.certificate');
-Route::get('/zero-return-certificate','frontend\certificate\EReturnCertificateController@zeroReturnCertificate')->name('zero.return.certificate');
-Route::get('/manual-process-e-return-certificate','frontend\certificate\EReturnCertificateController@manualeProcessEReturnCertificate')->name('manual.e.return.certificate');
-
-#scholarship
-Route::get('/scholarship','frontend\country\poland\articles\scholarship\ScholarshipController@index')->name('scholarship');
-
-#levels
-Route::get('/levels/{name}','frontend\articles\levels\AcademicLevelController@index')->name('academic.levels');
-
-#search
-Route::get('/search','frontend\SearchController@index')->name('search');
-
-# institute details
-Route::get('/university/name','frontend\institute\UniversityDetailsController@index')->name('university.details');
-
-# become a  member
-Route::get('members-list', 'frontend\global\BecomeAMemberController@index')->name('members.list');
-Route::post('become-a-member-modal-open', 'frontend\global\BecomeAMemberController@becomeAMemberModal')->name('become.a.member.modal.open');
-Route::post('become-a-member', 'frontend\global\BecomeAMemberController@becomeAMember')->name('become.a.member');
-
-
-#frontend user comment
-Route::post('frontend-user-comment', 'frontend\global\UserCommentController@comment')->name('frontend-user-comment');
-Route::post('frontend-user-comment-reply', 'frontend\global\UserCommentController@reply')->name('frontend-user-comment-reply');
-Route::post('load-more-comments', 'frontend\global\UserCommentController@loadMoreComments')->name('load.more.comments');
-Route::post('submit-feedback', 'frontend\global\UserCommentController@submitFeedback')->name('submit-feedback');
 
 // demo purpose admin panel . This  will change one after one
-Route::get('/demo-1','website\WebsiteController@demo')->name('notice-board');
+Route::get('/demo-1','website\WebsiteController@demo')->name('home');
 Route::get('/demo-2','website\WebsiteController@demo2')->name('send-email-or-sms');
 Route::get('/demo-3','website\WebsiteController@demo3')->name('event');
 Route::get('/demo-4','website\WebsiteController@demo4')->name('calendar');
@@ -117,25 +81,22 @@ Route::get('/app', function () {
 
 
 #Admin Panel
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','Blade','XSS'])->group(function () {
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','Blade'])->group(function () {
+
+    #Department
+    Route::get('users', 'user\UserController@index')->name('users');
+    Route::get('users-datatable', 'user\UserController@datatable')->name('user.datatablesds');
+    Route::post('save-user/{id?}', 'user\UserController@save')->name('user.save');
+    Route::get('user-edit/{id}', 'user\UserController@edit')->name('user.edit');
+    Route::get('block-user/{id}', 'user\UserController@block')->name('user.block');
+    Route::get('unblock-user/{id}', 'user\UserController@unblock')->name('user.unblock');
+    
 
     Route::get('members-list', 'employee\AttendanceController@index')->name('members.list');
 
     Route::get('country', 'admin\generalSettings\CountryController@index')->name('country.index');
     Route::get('country-datatable', 'admin\generalSettings\CountryController@datatable')->name('country.datatable');
 
-    Route::get('city', 'admin\generalSettings\CityController@index')->name('city.index');
-    Route::get('city-datatable', 'admin\generalSettings\CityController@datatable')->name('city.datatable');
-    Route::post('saving-city/{id?}', 'admin\generalSettings\CityController@save')->name('city.save');
-    Route::get('city-edit/{id}', 'admin\generalSettings\CityController@edit')->name('city.edit');
-    Route::get('block-city/{id}', 'admin\generalSettings\CityController@block')->name('city.block');
-    Route::get('unblock-city/{id}', 'admin\generalSettings\CityController@unblock')->name('city.unblock');
-
-    Route::get('tawk-to-chat', 'admin\generalSettings\PluginController@tawkTo')->name('tawk.to.index');
-    Route::post('tawk-to-chat-update', 'admin\generalSettings\PluginController@tawkToUpdate')->name('tawk.to.update');
-
-
-    
     #academic section
 
     #university
@@ -152,17 +113,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('university-subject-block/{id}', 'admin\academicSection\UniversitySubjectController@block')->name('acadmic-subject.block');
     Route::get('university-subject-unblock/{id}', 'admin\academicSection\UniversitySubjectController@unblock')->name('acadmic-subject.unblock');
     
-    
-    #frontend
 
-    #articles
-    Route::get('frontend-articles','admin\frontend\ArticleController@index')->name('frontend.article.index');
-    Route::get('frontend-articles/{id?}','admin\frontend\ArticleController@frontendArticle')->name('frontend-article.frontendArticle');
-    Route::post('frontend-articles-save/{id?}','admin\frontend\ArticleController@save')->name('frontend-article.save');
-    Route::get('frontend-articles-datatable', 'admin\frontend\ArticleController@datatable')->name('frontend.article.datatable');
-    Route::get('frontend-articles-block/{id}', 'admin\frontend\ArticleController@block')->name('frontend-article.block');
-    Route::get('frontend-articles-unblock/{id}', 'admin\frontend\ArticleController@unblock')->name('frontend-article.unblock');
-    
-    #common search
-    Route::get('ajaxSelectCityGetCity','admin\common\AjaxSearchController@ajaxSelectCountryGetCity')->name('ajaxSelectCountryGetCity');
 });

@@ -79,6 +79,7 @@ return [
     'address'                       =>  'Address ',
 
     #b
+    'block_this_user?'              =>  'Block this user? ',
     'block_this_subject?'           =>  'Block this subject? ',
     'both'                          =>  'Both ',
     'block_this_city?'              =>  'Block this city ',
@@ -116,6 +117,7 @@ return [
     'bottom'                        =>  'Bottom ',
 
     #c
+    'confirm_password'              =>  'Confirm Password ',
     'chat'                          =>  'Chat ',
     'configuration'                 =>  'Configurations ',
     'city'                          =>  'City ',
@@ -513,6 +515,8 @@ return [
     'total'                         =>  'Total ',
 
     #u
+    'unblock_this_user?'            =>  'Unblock this user? ',
+    'user'                          =>  'User ',
     'unblock_this_subject?'         =>  'Unblock this subject? ',
     'university'                    =>  'University ',
     'unblock_this_city?'            =>  'Unblock this city ',

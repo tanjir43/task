@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -18,16 +19,25 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
-        'name','email','password',
-        'block','employee_id','default_lan','google_id',
-        'role_id','created_by','updated_by'
+        'name',
+        'email',
+        'password',
+        'block',
+        'role_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**
@@ -63,5 +73,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function role()
     {
         return $this->belongsTo(Role::class)->withTrashed();
+    }
+
+    public function createdby()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+    
+    public function updatedby()
+    {
+        return $this->belongsTo(User::class,'updated_by');
+    }
+    
+    public function deletedby()
+    {
+        return $this->belongsTo(User::class,'deleted_by');
     }
 }

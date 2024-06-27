@@ -1,18 +1,7 @@
 <?php
 namespace App\Repositories;
 
-use App\Mail\UserAcceptMail;
 use App\Mail\UserMail;
-use App\Models\City;
-use App\Models\Company;
-use App\Models\Department;
-use App\Models\Designation;
-use App\Models\Employee;
-use App\Models\EmployeeHistory;
-use App\Models\Media;
-use App\Models\Member;
-use App\Models\Membership;
-use App\Models\TempEmployee;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,29 +9,56 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class SaveRepository {
 
-    public function UserForm(Request $request){
-    
-        #$role_id = 7;
-        $user = [
+    public function User(Request $request,$id)
+    {
+        $user_id = Auth::user()->id;
+
+        if (!empty($id)) {
+            $info = User::find($id);
+
+            if (!empty($info)){
+                $info->name             =   $request->name;
+                $info->email            =   $request->email;
+                $info->updated_by       =   $user_id;
+
+                if ($request->filled('password')) {
+                    $info->password = Hash::make($request->password);
+                }
+
+                DB::beginTransaction();
+                try {
+                    $info->save();
+                    DB::commit();
+                    return 'success';
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return $e;
+                }
+            }
+            else {
+                return  "No record found";
+            }
+        }
+
+        $data = [
             'name'                  =>  $request->name,
             'email'                 =>  $request->email,
             'password'              =>  Hash::make($request->password),
-            'nid'                   =>  $request->nid,
-            'phone'                 =>  $request->phone,
-            'created_by'            =>  '0'
+            'created_by'            =>  $user_id,
+            'role_id'               =>  3,
+            'email_verified_at'     =>  now(), 
         ];
-  
+
         $info  = [
             'name'  =>  $request->name
         ];
 
         DB::beginTransaction();
         try {
-            TempEmployee::create($user);
+            User::create($data);
             Mail::to($request->email)->send( new UserMail((object)$info));
             DB::commit();
             return 'success';
@@ -54,4 +70,51 @@ class SaveRepository {
         }
     }
 
+    public function BlockUser($id)
+    {
+        $deleted_by = Auth::user()->id;
+        $info = User::find($id);
+        if (!empty($info)){
+            $info->block      = 1;
+            $info->deleted_by   = $deleted_by;
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function UnblockUser($id)
+    {
+        $updated_by = Auth::user()->id;
+        $info = User::withTrashed()->find($id);
+        if (!empty($info)){
+            $info->updated_by   = $updated_by;
+            $info->deleted_by   = null;
+            $info->block      = 0;
+
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->restore();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
 }

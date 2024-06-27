@@ -9,7 +9,7 @@
 	<meta name="format-detection" content="telephone=no" />
 	<meta name="x-apple-disable-message-reformatting" />
 	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet" />
-	<title>Retina Soft</title>
+	<title>Techzu</title>
 
 	<style type="text/css" media="screen">
 		/* Linked Styles */
@@ -18,7 +18,7 @@
 		body { padding:0 !important; margin:0 !important; display:block !important; -webkit-text-size-adjust:none; background:#2c2c2c url(images/t2_free_bg.jpg); background-repeat:no-repeat repeat-y; background-position:0 0 }
 		a { color:#e85853; text-decoration:none }
 		p { padding:0 !important; margin:0 !important } 
-		img { -ms-interpolation-mode: bicubic; /* Allow smoother rendering of resized image in Internet Explorer */ }
+		img { -ms-interpolation-mode: bicubic;}
 		.mcnPreviewText { display: none !important; }
 				
 		/* Mobile styles */
@@ -98,7 +98,7 @@
 																	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 																		<tr>
 																			<td class="img m-center" style="font-size:0pt; line-height:0pt; text-align:center;">
-																				<img src="{{asset('images/rs_logo.png')}}" width="120px !important"  alt="logo" />
+																				<img src="{{ url('images/techzu.png') }}" width="120px !important"  alt="logo" />
 																			</td>
 																		</tr>
 																	</table>
