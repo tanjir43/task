@@ -15,7 +15,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 15%">{{ __('msg.name') }}</th>
-                                    <th style="width: 40%">{{ __('msg.email') }}</th>
+                                    <th style="width: 40%">{{ __('msg.information') }}</th>
                                     <th class="text-center" style="width:15%">{{ __('msg.status') }}</th>
                                     <th class="text-center" style="width: 15%">{{ __('msg.action_by') }}</th>
                                     <th style="text-align: right;width: 15%">{{ __('msg.action') }}</th>
@@ -32,6 +32,16 @@
                 <x-slot name="body">
                     <x-card variant="primary"  title="{{__('msg.user').' '.__('msg.information')}}">
                         <x-slot name="body">
+
+                            @include('common.search.area_search_criteria', [
+                                'mt' => 'mt-0',
+                                'div' => 'col-lg-12',
+                                'required' => ['country','city'],
+                                'visible' => ['country', 'city'],
+                                'record' => @$record
+
+                            ])
+
                             <div class="form-group">
                                 <?php
                                     $attr = [
@@ -64,9 +74,20 @@
 
                             <div class="form-group mt-2">
                                 {!! Form::label('group_id', __('Group')) !!}
-                                {!! Form::select('group_id', $groups->pluck('name', 'id'), isset($record) ? $record->group_id : null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Select Group')]) !!}
+                                {!! Form::select('group_id', $groups, isset($record) ? $record->group_id : null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Select Group')]) !!}
                             </div>
                             
+                            <div class="form-group">
+                                <?php
+                                    $emailAttr = [
+                                        'id'        => 'email',
+                                        'class'     => 'form-control',
+                                        'required'  => 'required',
+                                    ];
+                                ?>
+                                {!! Form::label('email', __('msg.email')) !!} <span class="text-danger">*</span>
+                                {!! Form::email('email', $record->email ?? old('email'), $emailAttr) !!}
+                            </div>
                             
                             <div class="form-group mt-2">
                                 <?php
@@ -117,7 +138,7 @@
             },
             "columns":[
                 {data: 'name',"orderable":true,"searchable":true},
-                {data: 'email',"orderable":false,"searchable":false},
+                {data: 'information',"orderable":false,"searchable":false},
                 {data: 'deleted_at',"orderable":false,"searchable":false},
                 {data: 'created_at',"orderable":false,"searchable":false},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

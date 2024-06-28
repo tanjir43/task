@@ -3,7 +3,9 @@ namespace App\Repositories;
 
 use App\Mail\UserMail;
 use App\Models\City;
+use App\Models\Group;
 use App\Models\User;
+use App\Models\UserDetail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +36,12 @@ class SaveRepository {
                 DB::beginTransaction();
                 try {
                     $info->save();
+
+                    $user_details = UserDetail::where('user_id',$id)->first();
+                    $user_details->country_id   = $request->country_id;
+                    $user_details->city_id      = $request->city_id;
+                    $user_details->save();
+
                     DB::commit();
                     return 'success';
                 } catch (Exception $e) {
@@ -64,7 +72,14 @@ class SaveRepository {
         DB::beginTransaction();
         try {
 
-            User::create($data);
+            $user = User::create($data);
+
+            $user_details  =new UserDetail();
+            $user_details->user_id      = $user->id;
+            $user_details->country_id   = $request->country_id;
+            $user_details->city_id      = $request->city_id;
+            $user_details->save();
+
             if (mailCheck()) {
                 Mail::to($request->email)->send(new UserMail((object)$info));
             }
@@ -191,6 +206,82 @@ class SaveRepository {
     public function UnblockCity($id)
     {
         $info = City::withTrashed()->find($id);
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->restore();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function Group(Request $request,$id)
+    {
+        if (!empty($id)) {
+            $info = Group::find($id);
+            if (!empty($info)){
+                $info->title            =   $request->title;
+                $info->description      =   $request->description;
+
+                DB::beginTransaction();
+                try {
+                    $info->save();
+                    DB::commit();
+                    return 'success';
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return $e;
+                }
+            }
+            else {
+                return  "No record found";
+            }
+        }
+        $data = [
+            'title'                 => $request->title,
+            'description'           => $request->description,
+        ];
+        DB::beginTransaction();
+        try {
+            Group::create($data);
+            DB::commit();
+            return 'success';
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function BlockGroup($id)
+    {
+        $info = Group::find($id);
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                $info->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function UnblockGroup($id)
+    {
+        $info = Group::withTrashed()->find($id);
         if (!empty($info)){
             DB::beginTransaction();
             try {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('title')->collation('utf16_general_ci');
-            $table->string('description')->collation('utf16_general_ci');
+            $table->string('description')->nullable()->collation('utf16_general_ci');
             
             $table->softDeletes();
             $table->timestamps();

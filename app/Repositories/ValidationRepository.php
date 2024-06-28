@@ -49,4 +49,11 @@ class ValidationRepository
         ]);
     }
 
+    public function isValidGroup(Request $request){
+        return Validator::make($request->all(), [
+            'title'         => 'required|max:250',
+            'description'   => 'nullable|max:250',
+        ]);
+    }
+
 }

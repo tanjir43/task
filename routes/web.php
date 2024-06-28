@@ -84,20 +84,20 @@ Route::get('/app', function () {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','Blade'])->group(function () {
 
     #Groups
-    Route::get('groups', 'user\UserController@index')->name('groups');
-    Route::get('groups-datatable', 'user\UserController@datatable')->name('group.datatable');
-    Route::post('save-group/{id?}', 'user\UserController@save')->name('group.save');
-    Route::get('group-edit/{id}', 'user\UserController@edit')->name('group.edit');
-    Route::get('block-group/{id}', 'user\UserController@block')->name('group.block');
-    Route::get('unblock-group/{id}', 'user\UserController@unblock')->name('group.unblock');
+    Route::get('groups', 'user\GroupController@index')->name('groups');
+    Route::get('groups-datatable', 'user\GroupController@datatable')->name('group.datatable');
+    Route::post('save-group/{id?}', 'user\GroupController@save')->name('group.save');
+    Route::get('group-edit/{id}', 'user\GroupController@edit')->name('group.edit');
+    Route::get('block-group/{id}', 'user\GroupController@block')->name('group.block');
+    Route::get('unblock-group/{id}', 'user\GroupController@unblock')->name('group.unblock');
     
     #Users
-    Route::get('users', 'user\GroupController@index')->name('users');
-    Route::get('users-datatable', 'user\GroupController@datatable')->name('user.datatable');
-    Route::post('save-user/{id?}', 'user\GroupController@save')->name('user.save');
-    Route::get('user-edit/{id}', 'user\GroupController@edit')->name('user.edit');
-    Route::get('block-user/{id}', 'user\GroupController@block')->name('user.block');
-    Route::get('unblock-user/{id}', 'user\GroupController@unblock')->name('user.unblock');
+    Route::get('users', 'user\UserController@index')->name('users');
+    Route::get('users-datatable', 'user\UserController@datatable')->name('user.datatable');
+    Route::post('save-user/{id?}', 'user\UserController@save')->name('user.save');
+    Route::get('user-edit/{id}', 'user\UserController@edit')->name('user.edit');
+    Route::get('block-user/{id}', 'user\UserController@block')->name('user.block');
+    Route::get('unblock-user/{id}', 'user\UserController@unblock')->name('user.unblock');
     
 
 
@@ -113,6 +113,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('block-city/{id}', 'admin\generalSettings\CityController@block')->name('city.block');
     Route::get('unblock-city/{id}', 'admin\generalSettings\CityController@unblock')->name('city.unblock');
 
-    #academic section
+    Route::get('ajaxSelectCityGetCity','admin\common\AjaxSearchController@ajaxSelectCountryGetCity')->name('ajaxSelectCountryGetCity');
+
 
 });

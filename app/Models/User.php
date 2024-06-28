@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -35,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'block',
         'role_id',
+        'group_id',
         'gender',
         'email_verified_at',    # for demo purpose
         'created_by',
@@ -90,5 +92,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function deletedby()
     {
         return $this->belongsTo(User::class,'deleted_by');
+    }
+
+    public function userDetail(): HasOne
+    {
+        return $this->hasOne(UserDetail::class, 'user_id');
     }
 }

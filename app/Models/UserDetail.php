@@ -13,7 +13,6 @@ class UserDetail extends Model
         'user_id',
         'country_id', 
         'city_id',
-        'group_id',
     ];
 
     public function user()

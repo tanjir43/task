@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Group;
 use App\Models\User;
 use App\Repositories\SaveRepository;
@@ -22,8 +24,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $groups = Group::get('id','name');
-        return view('admin.users.index',compact('groups'));
+        $groups = Group::pluck('title','id');
+        $countries = Country::get();
+        return view('admin.users.index',compact('groups','countries'));
     }
 
     public function save(Request $request, $id = null)
@@ -48,7 +51,7 @@ class UserController extends Controller
             ->editColumn('name', function ($data) {
                 return $data->name;
             })
-            ->editColumn('email', function ($data) {
+            ->editColumn('information', function ($data) {
                 $email = $data->email;
                 $mailToLink = '<a href="mailto:' . $email . '">' . $email . '</a>';
                 return $mailToLink;
@@ -100,15 +103,19 @@ class UserController extends Controller
                 $html .= '</ul></div>';
                 return $html; 
             })
-            ->rawColumns(['name','email', 'deleted_at', 'created_at', 'action'])
+            ->rawColumns(['name','information', 'deleted_at', 'created_at', 'action'])
             ->make(true);
     }
 
     public function edit($id)
     {
-        $record = User::where('id', $id)->firstOrFail();
-        
-        return view('admin.users.index',compact('record'));
+        $record = User::where('id', $id)->with('userDetail')->firstOrFail();
+        $groups = Group::pluck('title','id');
+        $countries = Country::get();
+        $cities = City::get();
+        $record->countries = $countries;
+        $record->cities = $cities;
+        return view('admin.users.index',compact('record','groups','countries','cities'));
     }
 
     public function block($id)
