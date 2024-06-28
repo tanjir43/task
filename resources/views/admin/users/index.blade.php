@@ -43,17 +43,30 @@
                                 {!! Form::label('name', __('msg.name')) !!} <span class="text-danger">*</span>
                                 {!! Form::text('name',$record->name ?? old('name'),$attr) !!}
                             </div>
+
                             <div class="form-group mt-2">
-                                <?php
-                                    $attr = [
-                                        'id'        => 'email',
-                                        'class'     => 'form-control',
-                                        'required'  => 'required',
-                                    ];
-                                ?>
-                                {!! Form::label('email',__('msg.email')) !!} <span class="text-danger">*</span>
-                                {!! Form::email('email',$record->email ?? old('email'),$attr) !!}
+                                {!! Form::label('gender', __('Gender')) !!} <span class="text-danger">*</span>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        {!! Form::radio('gender', 'male', isset($record) && $record->gender == 'male', ['id' => 'gender_male', 'class' => 'form-check-input']) !!}
+                                        {!! Form::label('gender_male', __('Male'), ['class' => 'form-check-label']) !!}
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        {!! Form::radio('gender', 'female', isset($record) && $record->gender == 'female', ['id' => 'gender_female', 'class' => 'form-check-input']) !!}
+                                        {!! Form::label('gender_female', __('Female'), ['class' => 'form-check-label']) !!}
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        {!! Form::radio('gender', 'other', isset($record) && $record->gender == 'other', ['id' => 'gender_other', 'class' => 'form-check-input']) !!}
+                                        {!! Form::label('gender_other', __('Other'), ['class' => 'form-check-label']) !!}
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="form-group mt-2">
+                                {!! Form::label('group_id', __('Group')) !!}
+                                {!! Form::select('group_id', $groups->pluck('name', 'id'), isset($record) ? $record->group_id : null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Select Group')]) !!}
+                            </div>
+                            
                             
                             <div class="form-group mt-2">
                                 <?php

@@ -83,35 +83,36 @@ Route::get('/app', function () {
 #Admin Panel
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','Blade'])->group(function () {
 
-    #Department
-    Route::get('users', 'user\UserController@index')->name('users');
-    Route::get('users-datatable', 'user\UserController@datatable')->name('user.datatable');
-    Route::post('save-user/{id?}', 'user\UserController@save')->name('user.save');
-    Route::get('user-edit/{id}', 'user\UserController@edit')->name('user.edit');
-    Route::get('block-user/{id}', 'user\UserController@block')->name('user.block');
-    Route::get('unblock-user/{id}', 'user\UserController@unblock')->name('user.unblock');
+    #Groups
+    Route::get('groups', 'user\UserController@index')->name('groups');
+    Route::get('groups-datatable', 'user\UserController@datatable')->name('group.datatable');
+    Route::post('save-group/{id?}', 'user\UserController@save')->name('group.save');
+    Route::get('group-edit/{id}', 'user\UserController@edit')->name('group.edit');
+    Route::get('block-group/{id}', 'user\UserController@block')->name('group.block');
+    Route::get('unblock-group/{id}', 'user\UserController@unblock')->name('group.unblock');
+    
+    #Users
+    Route::get('users', 'user\GroupController@index')->name('users');
+    Route::get('users-datatable', 'user\GroupController@datatable')->name('user.datatable');
+    Route::post('save-user/{id?}', 'user\GroupController@save')->name('user.save');
+    Route::get('user-edit/{id}', 'user\GroupController@edit')->name('user.edit');
+    Route::get('block-user/{id}', 'user\GroupController@block')->name('user.block');
+    Route::get('unblock-user/{id}', 'user\GroupController@unblock')->name('user.unblock');
     
 
-    Route::get('members-list', 'employee\AttendanceController@index')->name('members.list');
 
+    #Countries
     Route::get('country', 'admin\generalSettings\CountryController@index')->name('country.index');
     Route::get('country-datatable', 'admin\generalSettings\CountryController@datatable')->name('country.datatable');
 
+    #Cities
+    Route::get('city', 'admin\generalSettings\CityController@index')->name('city.index');
+    Route::get('city-datatable', 'admin\generalSettings\CityController@datatable')->name('city.datatable');
+    Route::post('saving-city/{id?}', 'admin\generalSettings\CityController@save')->name('city.save');
+    Route::get('city-edit/{id}', 'admin\generalSettings\CityController@edit')->name('city.edit');
+    Route::get('block-city/{id}', 'admin\generalSettings\CityController@block')->name('city.block');
+    Route::get('unblock-city/{id}', 'admin\generalSettings\CityController@unblock')->name('city.unblock');
+
     #academic section
-
-    #university
-    Route::get('university-list','admin\academicSection\UniversityController@index')->name('university.index');
-    Route::get('university/{id?}','admin\academicSection\UniversityController@university')->name('university.university');
-    Route::post('university-store','admin\academicSection\UniversityController@store')->name('university.store');
-    Route::get('university-datatable', 'admin\academicSection\UniversityController@datatable')->name('university.datatable');
-
-    #university subject
-    Route::get('university-subject-list','admin\academicSection\UniversitySubjectController@index')->name('academic-subject.index');
-    Route::get('university-subject/{id?}','admin\academicSection\UniversitySubjectController@universitySubject')->name('academic-subject.universitySubject');
-    Route::post('university-subject-save/{id?}','admin\academicSection\UniversitySubjectController@save')->name('academic-subject.store');
-    Route::get('university-subject-datatable', 'admin\academicSection\UniversitySubjectController@datatable')->name('academic-subject.datatable');
-    Route::get('university-subject-block/{id}', 'admin\academicSection\UniversitySubjectController@block')->name('acadmic-subject.block');
-    Route::get('university-subject-unblock/{id}', 'admin\academicSection\UniversitySubjectController@unblock')->name('acadmic-subject.unblock');
-    
 
 });

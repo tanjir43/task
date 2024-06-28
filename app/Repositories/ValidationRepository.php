@@ -40,4 +40,13 @@ class ValidationRepository
     
         return $request->validate($rules);
     }
+
+    public function isValidCity(Request $request){
+        return Validator::make($request->all(), [
+            'name'          => 'required|max:250',
+            'country_id'    => 'required|exists:countries,id',
+            'is_capital'    => 'sometimes|nullable',
+        ]);
+    }
+
 }

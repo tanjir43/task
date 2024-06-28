@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Mail\UserMail;
+use App\Models\City;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ class SaveRepository {
             if (!empty($info)){
                 $info->name             =   $request->name;
                 $info->email            =   $request->email;
+                $info->gender           =   $request->gender;
+                $info->group_id         =   $request->group_id;
                 $info->updated_by       =   $user_id;
 
                 if ($request->filled('password')) {
@@ -46,6 +49,8 @@ class SaveRepository {
         $data = [
             'name'                  =>  $request->name,
             'email'                 =>  $request->email,
+            'gender'                =>  $request->gender,
+            'group_id'              =>  $request->group_id,
             'password'              =>  Hash::make($request->password),
             'created_by'            =>  $user_id,
             'role_id'               =>  2,
@@ -106,6 +111,87 @@ class SaveRepository {
             $info->deleted_by   = null;
             $info->block      = 0;
 
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->restore();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function City(Request $request,$id)
+    {
+        if (!empty($id)) {
+            $info = City::find($id);
+
+            if (!empty($info)){
+                $info->name             =   $request->name;
+                $info->is_capital       =   $request->is_capital;
+                $info->country_id       =   $request->country;
+                $info->status           =   1;
+
+                DB::beginTransaction();
+                try {
+                    $info->save();
+                    DB::commit();
+                    return 'success';
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return $e;
+                }
+            }
+            else {
+                return  "No record found";
+            }
+        }
+        $data = [
+            'name'                  => $request->name,
+            'country_id'            => $request->country,
+            'is_capital'            => $request->is_capital,
+            'status'                => 1,
+        ];
+        DB::beginTransaction();
+        try {
+            City::create($data);
+            DB::commit();
+            return 'success';
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function BlockCity($id)
+    {
+        $info = City::find($id);
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                $info->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function UnblockCity($id)
+    {
+        $info = City::withTrashed()->find($id);
+        if (!empty($info)){
             DB::beginTransaction();
             try {
                 $info->save();

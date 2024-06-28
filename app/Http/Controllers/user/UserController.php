@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Group;
 use App\Models\User;
 use App\Repositories\SaveRepository;
 use App\Repositories\ValidationRepository;
@@ -21,7 +22,8 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('admin.users.index');
+        $groups = Group::get('id','name');
+        return view('admin.users.index',compact('groups'));
     }
 
     public function save(Request $request, $id = null)
