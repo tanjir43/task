@@ -116,4 +116,8 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('ajaxSelectCityGetCity','admin\common\AjaxSearchController@ajaxSelectCountryGetCity')->name('ajaxSelectCountryGetCity');
 
 
+    Route::get('events', 'admin\generalSettings\CityController@index')->name('event.index');
+    Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');
+    Route::get('event-assign', 'admin\generalSettings\CityController@index')->name('event.assign');
+
 });
