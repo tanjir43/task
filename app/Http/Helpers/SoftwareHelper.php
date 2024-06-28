@@ -57,3 +57,11 @@ if(!function_exists('commonDateFormat')) {
         return $date;
     }
 }
+
+if (!function_exists('mailCheck')) {
+    function mailCheck() {
+        return !empty(config('mail.mailers.smtp.username')) &&
+               !empty(config('mail.mailers.smtp.password')) &&
+               !empty(config('mail.from.address'));
+    }
+}

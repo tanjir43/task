@@ -35,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'block',
         'role_id',
+        'email_verified_at',    # for demo purpose
         'created_by',
         'updated_by',
         'deleted_by',
@@ -57,9 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',   # for demo purpose
+    // ];
 
     /**
      * The accessors to append to the model's array form.

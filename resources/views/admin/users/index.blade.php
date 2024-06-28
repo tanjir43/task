@@ -99,7 +99,7 @@
             "serverSide":true,
             "processing":true,
             "ajax":{
-                "url" : '{{route('user.datatablesds')}}',
+                "url" : '{{route('user.datatable')}}',
                 "type": "GET"
             },
             "columns":[

@@ -28,7 +28,13 @@
     </div>
 
     <x-admin-script-component />
-
+    <script>
+        $('.flag-icon').on('click', function(e) {
+            e.preventDefault();
+            toastr.error('Sorry! This is an upcoming feature.');
+        });
+     
+    </script>
 </body>
 
 </html>

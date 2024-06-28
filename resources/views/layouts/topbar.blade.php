@@ -20,26 +20,26 @@
         {{-- lang --}}
         <li class="dropdown notification-list topbar-dropdown">
             <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                @if (app()->getLocale() == 'bn')
-                    <img src="{{ asset('images/flags/bd.png') }}" alt="English" class="me-0 me-sm-1" height="12"> 
-                    <span class="align-middle d-none d-sm-inline-block">Bangla</span>
-                @else
-                    <img src="{{ asset('images/flags/us.jpg') }}" alt="English" class="me-0 me-sm-1" height="12"> 
-                    <span class="align-middle d-none d-sm-inline-block">English</span> 
-                @endif
+                @if (app()->getLocale() == 'sp')
+                <img src="{{ asset('images/flags/singapore.png') }}" alt="Singapore" class="me-0 me-sm-1 flag-icon" height="12"> 
+                <span class="align-middle d-none d-sm-inline-block">Singapore</span>
+            @else
+                <img src="{{ asset('images/flags/us.jpg') }}" alt="English" class="me-0 me-sm-1 flag-icon" height="12"> 
+                <span class="align-middle d-none d-sm-inline-block">English</span> 
+            @endif
                 <i class="mdi mdi-chevron-down d-none d-sm-inline-block align-middle"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu">
                 
                 @if (app()->getLocale() == 'en')
-                    <a href="{{ route('chang.lang','bn') }}" class="dropdown-item notify-item">
-                        <img src="{{ asset('images/flags/bd.png') }}" alt="Bangla" class="me-1" height="12"> 
-                        <span class="align-middle">Bangla</span>
+                    <a href="" class="dropdown-item notify-item flag-icon">
+                        <img src="{{ asset('images/flags/singapore.png') }}" alt="singapore" class="me-1" height="12"> 
+                        <span class="align-middle">Singapore</span>
                     </a>
                 @else
-                    <a href="{{ route('chang.lang','en') }}" class="dropdown-item notify-item">
-                        <img src="{{ asset('images/flags/us.jpg') }}" alt="English" class="me-1" height="12"> 
-                        <span class="align-middle">English</span>
+                    <a href="" class="dropdown-item notify-item flag-icon">
+                        <img src="{{ asset('images/flags/us.jpg') }}" alt="Singapore" class="me-1" height="12"> 
+                        <span class="align-middle">Singapore</span>
                     </a>
                 @endif
 

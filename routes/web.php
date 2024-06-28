@@ -85,7 +85,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
 
     #Department
     Route::get('users', 'user\UserController@index')->name('users');
-    Route::get('users-datatable', 'user\UserController@datatable')->name('user.datatablesds');
+    Route::get('users-datatable', 'user\UserController@datatable')->name('user.datatable');
     Route::post('save-user/{id?}', 'user\UserController@save')->name('user.save');
     Route::get('user-edit/{id}', 'user\UserController@edit')->name('user.edit');
     Route::get('block-user/{id}', 'user\UserController@block')->name('user.block');

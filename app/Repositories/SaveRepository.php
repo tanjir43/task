@@ -48,7 +48,7 @@ class SaveRepository {
             'email'                 =>  $request->email,
             'password'              =>  Hash::make($request->password),
             'created_by'            =>  $user_id,
-            'role_id'               =>  3,
+            'role_id'               =>  2,
             'email_verified_at'     =>  now(), 
         ];
 
@@ -58,11 +58,15 @@ class SaveRepository {
 
         DB::beginTransaction();
         try {
-            User::create($data);
-            Mail::to($request->email)->send( new UserMail((object)$info));
-            DB::commit();
-            return 'success';
 
+            User::create($data);
+            if (mailCheck()) {
+                Mail::to($request->email)->send(new UserMail((object)$info));
+            }
+           
+            DB::commit();
+            
+            return 'success';
         } catch (Exception $e) {
             DB::rollback();
             dd($e);

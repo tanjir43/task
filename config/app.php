@@ -15,10 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Retina Soft'),
-    'permissible_branch' => env('PERMISSIBLE_BRANCH',1),
-    'package' => env('PACKAGE','A1'),
-
+    'name' => env('APP_NAME', 'Techzu'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment

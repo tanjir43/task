@@ -55,7 +55,7 @@ return new class extends Migration
                 'email_verified_at' =>  now(),
                 'password'          =>  '$2y$10$qgsvHOwuCHOrnksxg2drMux5vRRwQHI1SfBkZFOfektDu0XNyhOWO', #user@user.com
                 'block'             =>  false,
-                'role_id'           =>  '3',
+                'role_id'           =>  '2',
                 'created_at'        =>  now(),
                 'updated_at'        =>  now(),
                 'created_by'        =>  '0'
