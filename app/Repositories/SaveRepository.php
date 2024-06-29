@@ -494,4 +494,54 @@ class SaveRepository {
         }
     }
 
+    public function AssignEvent(Request $request,$id)
+    {
+        if (!empty($id)) {
+            $info = City::find($id);
+
+            if (!empty($info)){
+                $info->name             =   $request->name;
+                $info->is_capital       =   $request->is_capital;
+                $info->country_id       =   $request->country;
+                $info->status           =   1;
+
+                DB::beginTransaction();
+                try {
+                    $info->save();
+                    DB::commit();
+                    return 'success';
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return $e;
+                }
+            }
+            else {
+                return  "No record found";
+            }
+        }
+        if ($request->user_id == 'all_user') {
+            if ($request->country_id && $request->city_id) {
+                $users = User::whereHas('userDetail', function($q) use ($request) {
+                    $q->where('country_id', $request->country_id)
+                      ->where('city_id', $request->city_id);
+                })->get();
+
+                foreach ($users as $user) {
+                    $user_event = new UserEvent;
+
+                }
+            }
+        }
+        
+        DB::beginTransaction();
+        try {
+            City::create($data);
+            DB::commit();
+            return 'success';
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    } 
+
 }

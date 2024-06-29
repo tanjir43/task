@@ -113,10 +113,11 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('block-city/{id}', 'admin\generalSettings\CityController@block')->name('city.block');
     Route::get('unblock-city/{id}', 'admin\generalSettings\CityController@unblock')->name('city.unblock');
 
-    #common
+    #Common
     Route::get('ajaxSelectCityGetCity','admin\common\AjaxSearchController@ajaxSelectCountryGetCity')->name('ajaxSelectCountryGetCity');
+    Route::get('/ajax-get-events-and-users', 'admin\common\AjaxSearchController@ajaxGetEventsAndUsers')->name('ajaxGetEventsAndUsers');
 
-    #events
+    #Events
     Route::get('events', 'admin\event\EventController@index')->name('event.index');
     Route::get('event-datatable', 'admin\event\EventController@datatable')->name('event.datatable');
     Route::post('saving-event/{id?}', 'admin\event\EventController@save')->name('event.save');
@@ -125,9 +126,19 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('unblock-event/{id}', 'admin\event\EventController@unblock')->name('event.unblock');
     Route::get('event/remove-media/{id}', 'admin\event\EventController@removeMedia')->name('delete.event.media');
 
+    #Event Assign
+    Route::get('event-assign', 'admin\event\AssignEventController@index')->name('event.assign');
+    Route::get('event-assign-datatable', 'admin\event\AssignEventController@datatable')->name('event-assign.datatable');
+    Route::post('saving-event-assign/{id?}', 'admin\event\AssignEventController@save')->name('event-assign.save');
+    Route::get('event-assign-edit/{id}', 'admin\event\AssignEventController@edit')->name('event-assign.edit');
+    Route::get('block-event-assign/{id}', 'admin\event\AssignEventController@block')->name('event-assign.block');
+    Route::get('unblock-event-assign/{id}', 'admin\event\AssignEventController@unblock')->name('event-assign.unblock');
+
+
 
 
     Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');
-    Route::get('event-assign', 'admin\generalSettings\CityController@index')->name('event.assign');
+    
+    
 
 });

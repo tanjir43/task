@@ -56,4 +56,11 @@ class ValidationRepository
         ]);
     }
 
+    public function isValidAssignEvent(Request $request){
+        return Validator::make($request->all(), [
+            'event_id'      => 'required|exists:events,id',
+            'user_id'       => 'required',
+        ]);
+    }
+
 }

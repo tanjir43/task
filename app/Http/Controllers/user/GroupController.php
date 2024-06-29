@@ -82,8 +82,6 @@ class GroupController extends Controller
             ->make(true);
     }
     
-    
-
     public function edit($id)
     {
         $record = Group::where('id', $id)->firstOrFail();

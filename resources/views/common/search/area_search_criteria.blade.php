@@ -154,7 +154,6 @@
             let city_required = "{{ in_array('city', $required) ? ' *' : '' }}";
 
             $("#common_select_country").on("change", function() {
-                var i = 0;
                 var formData = {
                     id: $(this).val(),
                 };
@@ -163,10 +162,8 @@
                     data: formData,
                     dataType: "json",
                     url: "{{ route('ajaxSelectCountryGetCity') }}",
-
                     beforeSend: function() {
-                        $('#common_select_city_loader').addClass('pre_loader').removeClass(
-                            'loader');
+                        $('#common_select_city_loader').addClass('pre_loader').removeClass('loader');
                     },
                     success: function(data) {
                         $("#common_select_city").empty().append(
@@ -187,18 +184,78 @@
                             });
                         }
                         $('#common_select_city').niceSelect('update');
-                        $('#common_select_city').trigger('change');
-
                     },
                     error: function(data) {
                         console.log("Error:", data);
                     },
                     complete: function() {
-                        i--;
-                        if (i <= 0) {
-                            $('#common_select_city_loader').removeClass('pre_loader')
-                                .addClass('loader');
+                        $('#common_select_city_loader').removeClass('pre_loader').addClass('loader');
+                    }
+                });
+            });
+
+            $("#common_select_city").on("change", function() {
+                var formData = {
+                    city_id: $(this).val(),
+                };
+                $.ajax({
+                    type: "GET",
+                    data: formData,
+                    dataType: "json",
+                    url: "{{ route('ajaxGetEventsAndUsers') }}",
+                    beforeSend: function() {
+                        $('#select_event_loader, #select_user_loader').addClass('pre_loader').removeClass('loader');
+                    },
+                    success: function(data) {
+                        // Update Events
+                        $("#event_id").empty().append(
+                            $("<option>", {
+                                value: '',
+                                text: window.jsLang('select_event'),
+                            })
+                        );
+
+                        if (data.events.length) {
+                            $.each(data.events, function(i, event) {
+                                $("#event_id").append(
+                                    $("<option>", {
+                                        value: event.id,
+                                        text: event.title,
+                                    })
+                                );
+                            });
                         }
+                        $('#event_id').niceSelect('update');
+
+                        // Update Users
+                        $("#user_id").empty().append(
+                            $("<option>", {
+                                value: '',
+                                text: window.jsLang('select_user'),
+                            }),
+                            $("<option>", {
+                                value: 'all_user',
+                                text: window.jsLang('all_user'),
+                            })
+                        );
+
+                        if (data.users.length) {
+                            $.each(data.users, function(i, user) {
+                                $("#user_id").append(
+                                    $("<option>", {
+                                        value: user.id,
+                                        text: user.name,
+                                    })
+                                );
+                            });
+                        }
+                        $('#user_id').niceSelect('update');
+                    },
+                    error: function(data) {
+                        console.log("Error:", data);
+                    },
+                    complete: function() {
+                        $('#select_event_loader, #select_user_loader').removeClass('pre_loader').addClass('loader');
                     }
                 });
             });
