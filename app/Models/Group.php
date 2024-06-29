@@ -17,4 +17,10 @@ class Group extends Model
         'title',
         'description',
     ];
+
+    // i have to relation with user group table
+    public function userGroup()
+    {
+        return $this->hasMany(UserGroup::class);
+    }
 }

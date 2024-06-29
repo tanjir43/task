@@ -17,8 +17,9 @@
                                 <tr>
                                     <th class="text-center" style="width:25%">{{ __('msg.title') }}</th>
                                     <th class="text-center" style="width:30%">{{ __('Description') }}</th>
-                                    <th class="text-center" style="width: 25%">{{ __('msg.action_by') }}</th>
-                                    <th style="text-align: right;width: 25%">{{ __('msg.action') }}</th>
+                                    <th class="text-center" style="width:10%">{{ __('Total User') }}</th>
+                                    <th class="text-center" style="width: 20%">{{ __('msg.action_by') }}</th>
+                                    <th style="text-align: right;width: 20%">{{ __('msg.action') }}</th>
                                 </tr>
                             </thead>
                         </table>
@@ -95,7 +96,8 @@
             "columns": [
                 { data: 'title', "orderable": true, "searchable": true },
                 { data: 'description', "orderable": false, "searchable": false },
-                { data: 'created_at', "orderable": true, "searchable": false }, 
+                { data: 'total_user', "orderable": false, "searchable": false },
+                { data: 'created_at', "orderable": false, "searchable": false }, 
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });

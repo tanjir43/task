@@ -40,7 +40,7 @@ class GroupController extends Controller
     }
     public function datatable()
     {
-        $info = Group::withTrashed()->orderBy('id', 'DESC');
+        $info = Group::with('userGroup')->withTrashed()->orderBy('id', 'DESC');
     
         return DataTables::of($info)
             ->addColumn('title', function ($data) {
@@ -48,6 +48,9 @@ class GroupController extends Controller
             })
             ->addColumn('description', function ($data) {
                 return $data->description;
+            })
+            ->addColumn('total_user', function ($data) {
+                return $data->userGroup->count();
             })
             ->addColumn('deleted_at', function ($data) {
                 if (empty($data->deleted_at)) {

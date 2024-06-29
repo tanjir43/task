@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\UserGroup;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +74,16 @@ class SaveRepository {
                     $user_details->city_id      = $request->city_id;
                     $user_details->save();
 
+                    if ($request->group_id) {
+                        $group = UserGroup::where('user_id',$id)->first();
+                        if ($group->group_id != $request->group_id) {
+                            $group->delete();
+                            $group              = new UserGroup();
+                            $group->user_id     = $id;
+                            $group->group_id    = $request->group_id;
+                            $group->save();
+                        }
+                    }
                     DB::commit();
                     return 'success';
                 } catch (Exception $e) {
@@ -111,10 +122,17 @@ class SaveRepository {
             $user_details->city_id      = $request->city_id;
             $user_details->save();
 
+            if ($request->group_id) {
+                $group              = new UserGroup();
+                $group->user_id     = $user->id;
+                $group->group_id    = $request->group_id;
+                $group->save();
+            }
+
             if (mailCheck()) {
                 Mail::to($request->email)->send(new UserMail((object)$info));
             }
-           
+
             DB::commit();
             
             return 'success';
