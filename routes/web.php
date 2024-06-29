@@ -113,10 +113,20 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('block-city/{id}', 'admin\generalSettings\CityController@block')->name('city.block');
     Route::get('unblock-city/{id}', 'admin\generalSettings\CityController@unblock')->name('city.unblock');
 
+    #common
     Route::get('ajaxSelectCityGetCity','admin\common\AjaxSearchController@ajaxSelectCountryGetCity')->name('ajaxSelectCountryGetCity');
 
+    #events
+    Route::get('events', 'admin\event\EventController@index')->name('event.index');
+    Route::get('event-datatable', 'admin\event\EventController@datatable')->name('event.datatable');
+    Route::post('saving-event/{id?}', 'admin\event\EventController@save')->name('event.save');
+    Route::get('event-edit/{id}', 'admin\event\EventController@edit')->name('event.edit');
+    Route::get('block-event/{id}', 'admin\event\EventController@block')->name('event.block');
+    Route::get('unblock-event/{id}', 'admin\event\EventController@unblock')->name('event.unblock');
+    Route::get('event/remove-media/{id}', 'admin\event\EventController@removeMedia')->name('event.event.media');
 
-    Route::get('events', 'admin\generalSettings\CityController@index')->name('event.index');
+
+
     Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');
     Route::get('event-assign', 'admin\generalSettings\CityController@index')->name('event.assign');
 

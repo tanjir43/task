@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('location', 200)->nullable();
             $table->date('from_date')->nullable();
             $table->date('to_date')->nullable();
-            $table->string('image')->nullable();
             $table->tinyInteger('status')->default(1);
             
             
@@ -27,6 +26,7 @@ return new class extends Migration
             $table->boolean('is_specific')->default(false); #if true then only specific by event will be area wise 
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->foreignId('media_id')->nullable()->constrained('media');
 
             $table->integer('created_by')->references('id')->on('users');
             $table->integer('updated_by')->nullable()->references('id')->on('users');

@@ -3,7 +3,9 @@ namespace App\Repositories;
 
 use App\Mail\UserMail;
 use App\Models\City;
+use App\Models\Event;
 use App\Models\Group;
+use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDetail;
 use Exception;
@@ -14,6 +16,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class SaveRepository {
+
+    public function UploadFile(Request $request,$fileName = null)
+    {
+        $created_by = Auth::user()->id;
+        
+        $upload = $request->file($fileName ?? 'file');
+        $path   = $upload->getRealPath();
+        $file   = file_get_contents($path);
+        $base64 = base64_encode($file);
+        $file = [
+            'name'          =>  $upload->getClientOriginalName(),
+            'mime'          =>  $upload->getClientMimeType(),
+            'size'          =>  number_format(($upload->getSize() / 1024), 1),
+            'attachment'    =>  'data:'.$upload->getClientMimeType().';base64,'.$base64,
+            'created_by'    =>  $created_by
+        ];
+        $info = Media::create($file);
+        return $info->id;
+    }
 
     public function User(Request $request,$id)
     {
@@ -296,6 +317,67 @@ class SaveRepository {
         }
         else{
             return __('msg.no_record_found');
+        }
+    }
+
+    public function Event(Request $request,$id)
+    {
+        $user_id = Auth::user()->id;
+
+        if ($request->hasFile('file')) {
+            $media_id = $this->UploadFile($request);
+        }
+
+        if (!empty($id)) {
+            $info = Event::find($id);
+
+            if (!empty($info)){
+                $info->name             =   $request->name;
+                $info->is_capital       =   $request->is_capital;
+                $info->country_id       =   $request->country;
+                $info->status           =   1;
+
+                DB::beginTransaction();
+                try {
+                    $info->save();
+                    DB::commit();
+                    return 'success';
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return $e;
+                }
+            }
+            else {
+                return  "No record found";
+            }
+        }
+        $data = [
+            'title'                 => $request->title,
+            'for_whom'              => $request->for_whom,
+            'description'           => $request->description,
+            'location'              => $request->location,
+            'from_date'             => $request->from_date,
+            'to_date'               => $request->to_date,
+            'is_specific'           => $request->is_specific,
+            'country_id'            => $request->country_id,
+            'city_id'               => $request->city_id,
+            'status'                => 1,
+            'created_by'            => $user_id,
+        ];
+
+        if ($request->hasFile('file')) {
+            $data['media_id'] = $media_id;
+        }
+
+        DB::beginTransaction();
+        try {
+            Event::create($data);
+            DB::commit();
+            return 'success';
+        } catch (Exception $e) {
+            dd($e);
+            DB::rollback();
+            return $e;
         }
     }
 }

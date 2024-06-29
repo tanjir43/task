@@ -12,7 +12,7 @@
 @if (in_array('country', $visible))
     <div class="{{ $div . ' ' . $mt }}" id="common_select_country_div">
         <div class="primary_input mb-25">
-            <label class="primary_input_label" for="">{{ __('msg.country') }}
+            <label class="primary_input_label fw-bold" for="">{{ __('msg.country') }}
                 <span class="text-danger">{{ in_array('country', $required) ? '*' : '' }}</span>
             </label>
             <select class="primary_select form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}"
@@ -45,7 +45,7 @@
 
 @if (in_array('city', $visible))
     <div class="{{ $div . ' ' . $mt }}" id="common_select_city_div">
-        <label class="primary_input_label" for="">{{ __('msg.city') }}
+        <label class="primary_input_label fw-bold" for="">{{ __('msg.city') }}
             <span class="text-danger">{{ in_array('city', $required) ? '*' : '' }}</span>
         </label>
         <select class="primary_select form-control{{ $errors->has('city_id') ? ' is-invalid' : '' }} select_city"
