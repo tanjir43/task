@@ -10,40 +10,107 @@
 @endphp
 
 @if (in_array('country', $visible))
-    <div class="{{ $div . ' ' . $mt }}" id="common_select_country_div">
-        <div class="primary_input mb-25">
-            <label class="primary_input_label fw-bold" for="">{{ __('msg.country') }}
-                <span class="text-danger">{{ in_array('country', $required) ? '*' : '' }}</span>
+    @if($record && $record->userDetail)
+        <div class="{{ $div . ' ' . $mt }}" id="common_select_country_div">
+            <div class="primary_input mb-25">
+                <label class="primary_input_label fw-bold" for="">{{ __('msg.country') }}
+                    <span class="text-danger">{{ in_array('country', $required) ? '*' : '' }}</span>
+                </label>
+                <select class="primary_select form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}"
+                    name="country_id" id="common_select_country">
+                    <option data-display="@lang('msg.select_country') {{ in_array('country', $required) ? '*' : '' }}" value="">
+                        {{ __('msg.select_country') }} {{ in_array('country', $required) ? '*' : '' }}</option>
+                    
+                    @if (isset($record) && $record && isset($record->countries) && count($record->countries) > 0)
+                        @foreach ($record->countries as $country)
+                            <option value="{{ $country->id }}"
+                                {{ isset($record->userDetail->country_id) && $record->userDetail->country_id == $country->id ? 'selected' : '' }}>
+                                {{ $country->name }}
+                            </option>
+                        @endforeach
+                    @else
+                        @foreach ($countries as $country)
+                            <option value="{{ $country->id }}"
+                                {{ isset($country_id) && $country_id == $country->id ? 'selected' : '' }}>
+                                {{ $country->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="pull-right loader loader_style" id="common_select_country_loader">
+                    <img class="loader_img_style" src="{{ asset('gif/wait.gif') }}" alt="loader">
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="{{ $div . ' ' . $mt }}" id="common_select_country_div">
+            <div class="primary_input mb-25">
+                <label class="primary_input_label fw-bold" for="">{{ __('msg.country') }}
+                    <span class="text-danger">{{ in_array('country', $required) ? '*' : '' }}</span>
+                </label>
+                <select class="primary_select form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}"
+                    name="country_id" id="common_select_country">
+                    <option data-display="@lang('msg.select_country') {{ in_array('country', $required) ? '*' : '' }}" value="">
+                        {{ __('msg.select_country') }} {{ in_array('country', $required) ? '*' : '' }}</option>
+                    
+                    @if (isset($record) && $record && isset($record->countries) && count($record->countries) > 0)
+                        @foreach ($record->countries as $country)
+                            <option value="{{ $country->id }}"
+                                {{ isset($record->country_id) && $record->country_id == $country->id ? 'selected' : '' }}>
+                                {{ $country->name }}
+                            </option>
+                        @endforeach
+                    @else
+                        @foreach ($countries as $country)
+                            <option value="{{ $country->id }}"
+                                {{ isset($country_id) && $country_id == $country->id ? 'selected' : '' }}>
+                                {{ $country->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="pull-right loader loader_style" id="common_select_country_loader">
+                    <img class="loader_img_style" src="{{ asset('gif/wait.gif') }}" alt="loader">
+                </div>
+            </div>
+        </div>
+    @endif
+@endif
+
+@if (in_array('city', $visible))
+    @if($record && $record->userDetail)
+        <div class="{{ $div . ' ' . $mt }}" id="common_select_city_div">
+            <label class="primary_input_label fw-bold" for="">{{ __('msg.city') }}
+                <span class="text-danger">{{ in_array('city', $required) ? '*' : '' }}</span>
             </label>
-            <select class="primary_select form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}"
-                name="country_id" id="common_select_country">
-                <option data-display="@lang('msg.select_country') {{ in_array('country', $required) ? '*' : '' }}" value="">
-                    {{ __('msg.select_country') }} {{ in_array('country', $required) ? '*' : '' }}</option>
-                
-                @if (isset($record) && $record && isset($record->countries) && count($record->countries) > 0)
-                    @foreach ($record->countries as $country)
-                        <option value="{{ $country->id }}"
-                            {{ isset($record->userDetail->country_id) && $record->userDetail->country_id == $country->id ? 'selected' : '' }}>
-                            {{ $country->name }}
+            <select class="primary_select form-control{{ $errors->has('city_id') ? ' is-invalid' : '' }} select_city"
+                id="common_select_city" name="city_id">
+                <option data-display="@lang('msg.select_city') {{ in_array('city', $required) ? '*' : '' }}" value="">
+                    @lang('msg.select_city') {{ in_array('city', $required) ? '*' : '' }}</option>
+                @if (isset($cities))
+                    @foreach ($cities as $city)
+                        <option value="{{ $city->id }}"
+                            {{ isset($city_id) && $city_id == $city->id ? 'selected' : '' }}>
+                            {{ $city->name }}
                         </option>
                     @endforeach
-                @else
-                    @foreach ($countries as $country)
-                        <option value="{{ $country->id }}"
-                            {{ isset($country_id) && $country_id == $country->id ? 'selected' : '' }}>
-                            {{ $country->name }}
+                @elseif (isset($record) && $record)
+                    @foreach ($record->cities as $city)
+                        <option value="{{ $city->id }}"
+                            {{ isset($record->userDetail->city_id) && $record->userDetail->city_id == $city->id ? 'selected' : '' }}>
+                            {{ $city->name }}
                         </option>
                     @endforeach
                 @endif
             </select>
-            <div class="pull-right loader loader_style" id="common_select_country_loader">
-                <img class="loader_img_style" src="{{ asset('gif/wait.gif') }}" alt="loader">
+            <div class="pull-right loader loader_style" id="common_select_city_loader">
+                <img src="{{ asset('gif/wait.gif') }}" alt="" style="width: 28px;height:28px;">
             </div>
-        </div>
-    </div>
-@endif
 
-@if (in_array('city', $visible))
+
+
+        </div>
+    @else
     <div class="{{ $div . ' ' . $mt }}" id="common_select_city_div">
         <label class="primary_input_label fw-bold" for="">{{ __('msg.city') }}
             <span class="text-danger">{{ in_array('city', $required) ? '*' : '' }}</span>
@@ -62,7 +129,7 @@
             @elseif (isset($record) && $record)
                 @foreach ($record->cities as $city)
                     <option value="{{ $city->id }}"
-                        {{ isset($record->userDetail->city_id) && $record->userDetail->city_id == $city->id ? 'selected' : '' }}>
+                        {{ isset($record->city_id) && $record->city_id == $city->id ? 'selected' : '' }}>
                         {{ $city->name }}
                     </option>
                 @endforeach
@@ -75,6 +142,9 @@
 
 
     </div>
+
+        
+    @endif
 @endif
 
 @push('scripts')

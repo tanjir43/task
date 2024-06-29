@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
+use App\Models\City;
 use App\Models\Country;
 use App\Models\Event;
 use App\Models\Group;
@@ -45,26 +46,38 @@ class EventController extends Controller
         $info = Event::withTrashed()->with('createdby', 'updatedby', 'deletedby', 'country')->orderby('id', 'DESC');
     
         return DataTables::of($info)
-            ->editColumn('country_id', function ($data) {
-                return $data->country->name ?? '';
+            ->editColumn('title', function ($data) {
+                return $data->title ?? '';
             })
-            ->editColumn('name', function ($data) {
-                $is_capital = $data->is_capital ? 'Capital' : '';
+            ->editColumn('image',function ($data){
+                if(!empty($data->media)){
+                    return '<img src="data:'.$data->media->attachment.'" class="img-thumbnail">';
+                }
+                return '<img src="'.asset('images/none.png').'" class="img-thumbnail">';
+            })
+            ->editColumn('image',function ($data){
+                if(!empty($data->media)){
+                    return '<img src="data:'.$data->media->attachment.'" class="img-thumbnail">';
+                }
+                return '<img src="'.asset('images/none.png').'" class="img-thumbnail">';
+            })
+            ->filterColumn('title', function ($query, $keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%');
+            })
+            ->editColumn('information', function ($data) {
+                $html = '<br> <strong>'.__('FromDate').' : </strong>';
+                $html.=  commonDateFormat(@$data->from_date);
+                $html.= '<br> <strong>'.__('To Date').' : </strong><br>'. commonDateFormat(@$data->to_date);
+                $html.= '<br> <strong>'.__('For').' : </strong>';
+                $html.= @$data->for_whom;
+                return $html;
+            })
 
-                return $data->name . '<br/> <p class="badge bg-success">' . $is_capital . '</p>';
-            })
-            ->filterColumn('name', function ($query, $keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
-            })
             ->editColumn('status', function ($data) {
                 if (empty($data->deleted_at)) {
                     return '<span class="badge bg-success">' . __('msg.running') . '</span>';
                 } else {
-                    $html = '<p class="text-center"><span class="badge bg-danger">' . __('msg.closed') . '</span>';
-                    if ($data->deletedby) {
-                        $html .= '<br><span class="badge bg-danger mt-1">' . $data->deletedby->name . '</span></p>';
-                    }
-                    return $html;
+                    return '<span class="badge bg-danger">' . __('msg.closed') . '</span>';
                 }
             })
             ->editColumn('action_by', function ($data) {
@@ -83,22 +96,26 @@ class EventController extends Controller
                 $html = '<div class="text-center">';
                 if (empty($data->deleted_at)) {
                     $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
-                    $html .= '<a onclick="return confirm(\'' . __('msg.block_this_event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
+                    $html .= '<a onclick="return confirm(\'' . __('Block This Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
                 } else {
-                    $html .= '<a onclick="return confirm(\'' . __('msg.unblock_this_event?') . '\')" href="' . $unblock . '"><i class="fas fa-unlock text-success"></i></a>';
+                    $html .= '<a onclick="return confirm(\'' . __('Unblock This Event?') . '\')" href="' . $unblock . '"><i class="fas fa-unlock text-success"></i></a>';
                 }
                 $html .= '</div>';
                 return $html;
             })
-            ->rawColumns(['country_id', 'name', 'status', 'action_by', 'action'])
+            ->rawColumns(['title', 'image','information' ,'status', 'action_by', 'action'])
             ->make(true);
     }
     
     public function edit($id)
     {
-        $record = Event::where('id', $id)->firstOrFail();
-        $countries = Country::orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
-        return view('admin.events.event.index',compact('record','countries'));
+        $record = Event::where('id', $id)->with('media')->firstOrFail();
+        $groups = Group::pluck('title','id');
+        $countries = Country::get();
+        $cities = City::get();
+        $record->countries = $countries;
+        $record->cities = $cities;
+        return view('admin.events.event.index',compact('record','countries','groups','cities'));
     }
 
     public function block($id)
@@ -113,7 +130,7 @@ class EventController extends Controller
 
     public function unblock($id)
     {
-        $status = $this->save->UnblockCity($id);
+        $status = $this->save->UnblockEvent($id);
         if ($status == 'success') {
             return redirect(route('event.index'))->with(['success' => 'successfully saved']);
         } else {

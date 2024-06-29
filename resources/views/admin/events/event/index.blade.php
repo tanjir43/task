@@ -15,11 +15,12 @@
                         <table class="table table-bordered" id="event_table" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th style="width: 20%">{{ __('msg.country') }}</th>
-                                    <th class="text-center" style="width:20%">{{ __('msg.name') }}</th>
-                                    <th class="text-center" style="width:20%">{{ __('msg.status') }}</th>
-                                    <th class="text-center" style="width: 25%">{{ __('msg.action_by') }}</th>
-                                    <th style="text-align: right;width: 25%">{{ __('msg.action') }}</th>
+                                    <th class="text-center" style="width:15%">{{ __('Title') }}</th>
+                                    <th class="text-center" style="width:15%">{{ __('Image') }}</th>
+                                    <th class="text-center" style="width:25%">{{ __('Information') }}</th>
+                                    <th class="text-center" style="width:15%">{{ __('msg.status') }}</th>
+                                    <th class="text-center" style="width: 15%">{{ __('msg.action_by') }}</th>
+                                    <th style="text-align: right;width: 15%">{{ __('msg.action') }}</th>
                                 </tr>
                             </thead>
                         </table>
@@ -50,19 +51,19 @@
                                 {!! Form::label('gender', __('For Whom')) !!}
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        {!! Form::radio('for_whom', 'all', isset($record) && $record->gender == 'all', ['id' => 'gender_all', 'class' => 'form-check-input']) !!}
+                                        {!! Form::radio('for_whom', 'all', isset($record) && $record->for_whom == 'all', ['id' => 'gender_all', 'class' => 'form-check-input']) !!}
                                         {!! Form::label('gender_all', __('All'), ['class' => 'form-check-label']) !!}
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        {!! Form::radio('for_whom', 'male', isset($record) && $record->gender == 'male', ['id' => 'gender_male', 'class' => 'form-check-input']) !!}
+                                        {!! Form::radio('for_whom', 'male', isset($record) && $record->for_whom == 'male', ['id' => 'gender_male', 'class' => 'form-check-input']) !!}
                                         {!! Form::label('gender_male', __('Male'), ['class' => 'form-check-label']) !!}
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        {!! Form::radio('for_whom', 'female', isset($record) && $record->gender == 'female', ['id' => 'gender_female', 'class' => 'form-check-input']) !!}
+                                        {!! Form::radio('for_whom', 'female', isset($record) && $record->for_whom == 'female', ['id' => 'gender_female', 'class' => 'form-check-input']) !!}
                                         {!! Form::label('gender_female', __('Female'), ['class' => 'form-check-label']) !!}
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        {!! Form::radio('for_whom', 'other', isset($record) && $record->gender == 'other', ['id' => 'gender_other', 'class' => 'form-check-input']) !!}
+                                        {!! Form::radio('for_whom', 'other', isset($record) && $record->for_whom == 'other', ['id' => 'gender_other', 'class' => 'form-check-input']) !!}
                                         {!! Form::label('gender_other', __('Other'), ['class' => 'form-check-label']) !!}
                                     </div>
                                 </div>
@@ -144,7 +145,6 @@
                                {!! Form::label('is_specific', __('Is Specific')) !!} <br>
                                {!! Form::checkbox('is_specific', 1, $record->is_specific ?? old('is_specific', false), $attr) !!}
                             </div>
-
                             <div id="activity_change" class="{{ @$record->is_specific ==1 ? '' : 'd-none' }}">
                                 @include('common.search.area_search_criteria', [
                                     'mt' => 'mt-0',
@@ -166,9 +166,9 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('backEnd/flatpickr/dist/flatpickr.min.js')}}"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-    <script src="{{asset('backEnd/flatpickr/dist/flatpickr.min.js')}}"></script>
 
     <script>
         $(document).ready(function() {
@@ -178,22 +178,11 @@
 
             from_date.flatpickr({
                 dateFormat: 'Y-m-d',
-                defaultDate: 'today',
-                onChange: function(selectedDates, dateStr, instance) {
-                    to_date.flatpickr({
-                        dateFormat: 'Y-m-d',
-                        minDate: dateStr,
-                    });
-                }
             });
 
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
 
             to_date.flatpickr({
                 dateFormat: 'Y-m-d',
-                defaultDate: tomorrow,
-                minDate: tomorrow
             });
 
             // Summernote
@@ -234,8 +223,9 @@
                     "type": "GET"
                 },
                 "columns": [
-                    { data: 'country_id', "orderable": true, "searchable": true },
-                    { data: 'name', "orderable": true, "searchable": true },
+                    { data: 'title', "orderable": true, "searchable": true },
+                    { data: 'image', "orderable": true, "searchable": true },
+                    { data: 'information', "orderable": true, "searchable": true },
                     { data: 'status', "orderable": true, "searchable": true },
                     { data: 'action_by', "orderable": false, "searchable": false },
                     { data: 'action', name: 'action', orderable: false, searchable: false },

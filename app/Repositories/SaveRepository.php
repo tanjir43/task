@@ -36,6 +36,16 @@ class SaveRepository {
         return $info->id;
     }
 
+    public function RemoveMedia($id)
+    {
+        try {
+            Media::where('id',$id)->delete();
+            return true;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
     public function User(Request $request,$id)
     {
         $user_id = Auth::user()->id;
@@ -332,11 +342,21 @@ class SaveRepository {
             $info = Event::find($id);
 
             if (!empty($info)){
-                $info->name             =   $request->name;
-                $info->is_capital       =   $request->is_capital;
-                $info->country_id       =   $request->country;
-                $info->status           =   1;
+                $info->title            = $request->title;
+                $info->for_whom         = $request->for_whom;
+                $info->description      = $request->description;
+                $info->location         = $request->location;
+                $info->from_date        = $request->from_date;
+                $info->to_date          = $request->to_date;
+                $info->is_specific      = $request->is_specific;
+                $info->country_id       = $request->country_id;
+                $info->city_id          = $request->city_id;
+                $info->updated_by       = $user_id;
 
+                if ($request->hasFile('file')) {
+                    $info->media_id     = $media_id;
+                }
+                
                 DB::beginTransaction();
                 try {
                     $info->save();
@@ -380,4 +400,80 @@ class SaveRepository {
             return $e;
         }
     }
+
+    public function BlockEvent($id)
+    {
+        $deleted_by = Auth::user()->id;
+        $info = Event::find($id);
+        if (!empty($info)){
+            $info->status       = 0;
+            $info->deleted_by   = $deleted_by;
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function UnblockEvent($id)
+    {
+        $updated_by = Auth::user()->id;
+        $info = Event::withTrashed()->find($id);
+        if (!empty($info)){
+            $info->updated_by   = $updated_by;
+            $info->deleted_by   = null;
+            $info->status       = 1;
+
+            DB::beginTransaction();
+            try {
+                $info->save();
+                $info->restore();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                dd($e);
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function RemoveEventMedia($id)
+    {
+        $updated_by = Auth::user()->id;
+        $info = Event::find($id);
+
+        if (!empty($info)){
+            $media_id           =   $info->media_id;
+            $info->media_id     =   null;
+            $info->updated_by   =   $updated_by;
+
+            DB::beginTransaction();
+            try {
+                $info->save();
+                DB::commit();
+                $this->RemoveMedia($media_id);
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
 }

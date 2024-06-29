@@ -123,7 +123,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('event-edit/{id}', 'admin\event\EventController@edit')->name('event.edit');
     Route::get('block-event/{id}', 'admin\event\EventController@block')->name('event.block');
     Route::get('unblock-event/{id}', 'admin\event\EventController@unblock')->name('event.unblock');
-    Route::get('event/remove-media/{id}', 'admin\event\EventController@removeMedia')->name('event.event.media');
+    Route::get('event/remove-media/{id}', 'admin\event\EventController@removeMedia')->name('delete.event.media');
 
 
 
