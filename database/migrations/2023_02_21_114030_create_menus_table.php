@@ -138,7 +138,7 @@ return new class extends Migration
         [
             'id'        => 201,
             'parent'    => 200,
-            'name'      => 'eEvents',
+            'name'      => 'Events',
             'web'       => 'event.index',
             'app'       => '',
             'web_icon'  => 'uil uil-user',
