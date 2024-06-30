@@ -32,7 +32,7 @@ class EventRequestController extends Controller
             ->editColumn('information', function ($data) {
                $html = '';
                $html .= 'Name' .':' . $data->user->name ;
-               $html .= 'aEmail' .':'. $data->user->email ;
+               $html .= 'Email' .':'. $data->user->email ;
                 return $html;
             })
             ->editColumn('status', function ($data) {

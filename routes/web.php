@@ -140,7 +140,13 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     
     #user panel event
     Route::get('event-assign-request/{id}', 'user\event\MyEventController@eventAssignRequest')->name('event.assign.request');
-    Route::get('upcoming-events', 'user\event\MyEventController@upcomingEvent')->name('upcoming.events');
+    
+    
     Route::get('my-events', 'user\event\MyEventController@myEvent')->name('my.events');
+    Route::get('user-event-datatable','user\event\MyEventController@userEventdatatable')->name('user.event.datatable');
+    
+    
+    Route::get('upcoming-events', 'user\event\MyEventController@upcomingEvent')->name('upcoming.events');
+    Route::get('upcoming-event-datatable','user\event\MyEventController@upcomingEventdatatable')->name('upcoming.event.datatable');
 
 });
