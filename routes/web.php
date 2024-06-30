@@ -132,10 +132,14 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('block-event-assign/{id}', 'admin\event\AssignEventController@block')->name('event-assign.block');
 
     #event request from users
-    Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');
-    
+    Route::get('event-request', 'admin\event\EventRequestController@index')->name('event.request');
+    Route::get('event-request-datatable', 'admin\event\EventRequestController@datatable')->name('event-request.datatable');
+    Route::get('block-event-request/{id}', 'admin\event\EventRequestController@block')->name('event-request.block');
+    Route::get('unblock-event-request/{id}', 'admin\event\EventRequestController@unblock')->name('event-request.unblock');
+
     
     #user panel event
+    Route::get('event-assign-request/{id}', 'user\event\MyEventController@eventAssignRequest')->name('event.assign.request');
     Route::get('upcoming-events', 'user\event\MyEventController@upcomingEvent')->name('upcoming.events');
     Route::get('my-events', 'user\event\MyEventController@myEvent')->name('my.events');
 

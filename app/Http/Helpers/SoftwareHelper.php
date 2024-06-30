@@ -65,3 +65,16 @@ if (!function_exists('mailCheck')) {
                !empty(config('mail.from.address'));
     }
 }
+
+if (!function_exists('checkUserRole')) {
+    function checkUserRole() {
+        if(!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+        if(in_array($user->role->id,[2])) {
+            return true;
+        }
+        return false;
+    }
+}

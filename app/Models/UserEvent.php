@@ -9,7 +9,7 @@ class UserEvent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'event_id'];
+    protected $fillable = ['user_id', 'event_id','status'];
 
     public function user()
     {

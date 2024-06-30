@@ -567,4 +567,68 @@ class SaveRepository {
         }
     }
 
+    public function EventAssignRequest($id)
+    {
+        $user_id = auth()->id();
+        $info = Event::find($id);
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                $user_event = new UserEvent();
+                $user_event->user_id    =  $user_id;
+                $user_event->event_id   =  $info->id;
+                $user_event->status     =  'pending';
+                $user_event->save();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function AcceptRequest($id)
+    {
+        $info = UserEvent::find($id);
+        if (!empty($info)){
+            $info->status       = 'approved';
+            DB::beginTransaction();
+            try {
+                $info->save();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
+    public function RejectRequest($id)
+    {
+        $info = UserEvent::find($id);
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                $info->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                dd($e);
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
+        }
+    }
+
 }

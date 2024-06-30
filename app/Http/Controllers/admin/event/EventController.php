@@ -89,18 +89,38 @@ class EventController extends Controller
                 return $html;
             })
             ->addColumn('action', function ($data) {
-                $edit_url = route('event.edit', $data->id);
-                $block = route('event.block', $data->id);
-                $unblock = route('event.unblock', $data->id);
-    
-                $html = '<div class="text-center">';
-                if (empty($data->deleted_at)) {
-                    $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
-                    $html .= '<a onclick="return confirm(\'' . __('Block This Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
+                if (checkUserRole()) {
+                    $request_url = route('event.assign.request', $data->id);
+                    $html = '<div class="text-center">';
+                    
+                    if ($data->userEvents->isEmpty()) {
+                        $html .= '<a href="' . $request_url . '"><i class="fas fa-floppy-disk"></i></a>';
+                    } else {
+                        $userEvent = $data->userEvents->first();
+                        if ($userEvent->status == 'pending') {
+                            $html .= '<i class="fas fa-floppy-disk text-warning" data-toggle="tooltip" title="Pending"></i>';
+                        } elseif ($userEvent->status == 'rejected') {
+                            $html .= '<i class="fas fa-floppy-disk text-danger" data-toggle="tooltip" title="Rejected"></i>';
+                        } elseif($userEvent->status == 'approved') {
+                            $html .= '<i class="fas fa-floppy-disk text-success" data-toggle="tooltip" title="Approved"></i>';
+                        }
+                    }
+            
+                    $html .= '</div>';
                 } else {
-                    $html .= '<a onclick="return confirm(\'' . __('Unblock This Event?') . '\')" href="' . $unblock . '"><i class="fas fa-unlock text-success"></i></a>';
+                    $edit_url = route('event.edit', $data->id);
+                    $block = route('event.block', $data->id);
+                    $unblock = route('event.unblock', $data->id);
+        
+                    $html = '<div class="text-center">';
+                    if (empty($data->deleted_at)) {
+                        $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
+                        $html .= '<a onclick="return confirm(\'' . __('Block This Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
+                    } else {
+                        $html .= '<a onclick="return confirm(\'' . __('Unblock This Event?') . '\')" href="' . $unblock . '"><i class="fas fa-unlock text-success"></i></a>';
+                    }
+                    $html .= '</div>';
                 }
-                $html .= '</div>';
                 return $html;
             })
             ->rawColumns(['title', 'image','information' ,'status', 'action_by', 'action'])
