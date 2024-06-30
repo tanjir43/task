@@ -43,8 +43,13 @@ class EventController extends Controller
 
     public function datatable()
     {
+        $current_date = date('Y-m-d');
         $info = Event::withTrashed()->with('createdby', 'updatedby', 'deletedby', 'country')->orderby('id', 'DESC');
     
+        if (checkUserRole()) {
+            $info->where('from_date', '>=', $current_date)->where('to_date', '>=', $current_date);
+        }
+        
         return DataTables::of($info)
             ->editColumn('title', function ($data) {
                 return $data->title ?? '';
@@ -69,7 +74,13 @@ class EventController extends Controller
                 $html.=  commonDateFormat(@$data->from_date);
                 $html.= '<br> <strong>'.__('To Date').' : </strong><br>'. commonDateFormat(@$data->to_date);
                 $html.= '<br> <strong>'.__('For').' : </strong>';
-                $html.= @$data->for_whom;
+                $html.= @$data->for_whom  .'</br>'; 
+                if($data->from_date >= date('Y-m-d')){
+                    $html.= '<span class="badge bg-success">' . __('Upcoming') . '</span>';
+                }  
+                if ($data->to_date <= date('Y-m-d')) {
+                    $html.= '<span class="badge bg-danger">' . __('Completed') . '</span>';
+                }
                 return $html;
             })
 

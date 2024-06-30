@@ -37,8 +37,20 @@ class MyEventController extends Controller
 
     public function userEventdatatable()
     {
-        $info = UserEvent::with('user','event')->where('user_id',auth()->id())->orderby('id', 'DESC');
+        $current_date = date('Y-m-d');
+
+        $info = UserEvent::with(['user', 'event'])
+            ->where('user_id', auth()->id())
+            ->orderBy('id', 'DESC');
     
+        if (checkUserRole()) {
+            $info->whereHas('event', function($query) use ($current_date) {
+                $query->where('from_date', '>=', $current_date)
+                    ->where('to_date', '>=', $current_date);
+            });
+        }
+        $info = $info->get();
+
         return DataTables::of($info)
             ->addColumn('event', function ($data) {
                 return $data->event->title ?? '';
@@ -77,9 +89,11 @@ class MyEventController extends Controller
 
     public function upcomingEventdatatable()
     {
-        $current_time = date('Y-m-d');
-        $info = Event::where('status',1)->where('from_date','>=',$current_time)->orderby('id', 'DESC')->get();
-    
+        $current_date = date('Y-m-d');
+        $info = Event::where('status',1)->orderby('id', 'DESC')->get();
+        if (checkUserRole()) {
+            $info->where('from_date', '>=', $current_date)->where('to_date', '>=', $current_date);
+        }
         return DataTables::of($info)
             ->addColumn('title', function ($data) {
                 return $data->title ?? '';
