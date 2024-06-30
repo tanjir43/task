@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Media;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\UserEvent;
 use App\Models\UserGroup;
 use Exception;
 use Illuminate\Http\Request;
@@ -494,54 +495,58 @@ class SaveRepository {
         }
     }
 
-    public function AssignEvent(Request $request,$id)
+    public function AssignEvent(Request $request, $id)
     {
         if (!empty($id)) {
-            $info = City::find($id);
+            $info = Event::find($id);
 
-            if (!empty($info)){
-                $info->name             =   $request->name;
-                $info->is_capital       =   $request->is_capital;
-                $info->country_id       =   $request->country;
-                $info->status           =   1;
-
-                DB::beginTransaction();
-                try {
-                    $info->save();
-                    DB::commit();
-                    return 'success';
-                } catch (Exception $e) {
-                    DB::rollback();
-                    return $e;
-                }
+            if (!$info) {
+                return "Event not found";
             }
-            else {
-                return  "No record found";
-            }
+        } else {
+            return "Event ID is required";
         }
-        if ($request->user_id == 'all_user') {
-            if ($request->country_id && $request->city_id) {
-                $users = User::whereHas('userDetail', function($q) use ($request) {
-                    $q->where('country_id', $request->country_id)
-                      ->where('city_id', $request->city_id);
-                })->get();
 
-                foreach ($users as $user) {
-                    $user_event = new UserEvent;
-
-                }
-            }
-        }
-        
         DB::beginTransaction();
+
         try {
-            City::create($data);
+            if ($request->user_id == 'all_user') {
+                if ($request->country_id && $request->city_id) {
+                    $users = User::whereHas('userDetail', function ($q) use ($request) {
+                        $q->where('country_id', $request->country_id)
+                        ->where('city_id', $request->city_id);
+                    })->get();
+
+                    foreach ($users as $user) {
+                        $this->updateOrCreateUserEvent($user->id, $request->event_id);
+                    }
+                } else {
+                    $users = User::where('block', 0)->where('role_id', 2)->get();
+
+                    foreach ($users as $user) {
+                        $this->updateOrCreateUserEvent($user->id, $request->event_id);
+                    }
+                }
+            } else {
+                $this->updateOrCreateUserEvent($request->user_id, $request->event_id);
+            }
+
             DB::commit();
             return 'success';
         } catch (Exception $e) {
             DB::rollback();
-            return $e;
+            return $e->getMessage();
         }
-    } 
+    }
+
+    private function updateOrCreateUserEvent($userId, $eventId)
+    {
+        if (!UserEvent::where('user_id', $userId)->where('event_id', $eventId)->exists()) {
+            $user_event = new UserEvent();
+            $user_event->user_id = $userId;
+            $user_event->event_id = $eventId;
+            $user_event->save();
+        }
+    }
 
 }

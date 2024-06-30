@@ -45,7 +45,6 @@
                                 'required' => [''],
                                 'visible' => ['country', 'city'],
                                 'record' => @$record
-
                             ])
 
                             <div class="form-group">
@@ -96,22 +95,23 @@
 
 <script>
     $(function() {
-        window.LaravelDataTables=window.LaravelDataTables||{};
-        window.LaravelDataTables["dataTableBuilder"]=$("#assign_event_table").DataTable({
-            "serverSide":true,
-            "processing":true,
-            "ajax":{
-                "url" : '{{route('city.datatable')}}',
+        window.LaravelDataTables = window.LaravelDataTables || {};
+        window.LaravelDataTables["dataTableBuilder"] = $("#assign_event_table").DataTable({
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url": '{{ route('event-assign.datatable') }}',
                 "type": "GET"
             },
-            "columns":[
-                {data: 'country_id',"orderable":true,"searchable":true},
-                {data: 'name',"orderable":true,"searchable":true},
-                {data: 'status',"orderable":true,"searchable":true},
-                {data: 'action_by',"orderable":false,"searchable":false},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+            "columns": [
+                { data: 'title', name: 'title', orderable: true, searchable: true },
+                { data: 'total_user', name: 'total_user', orderable: false, searchable: false },
+                { data: 'status', name: 'status', orderable: true, searchable: true },
+                { data: 'action_by', name: 'action_by', orderable: false, searchable: false },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
     });
 </script>
+
 @endpush

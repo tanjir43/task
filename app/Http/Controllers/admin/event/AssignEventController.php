@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\UserEvent;
 use App\Repositories\SaveRepository;
 use App\Repositories\ValidationRepository;
 use Illuminate\Http\Request;
@@ -26,7 +27,9 @@ class AssignEventController extends Controller
     {
         $countries  = Country::get();
         $events     = Event::where('status', 1)->pluck('title', 'id');
-        $users      = User::where('block',0)->where('role_id',2)->orderBy('name','Asc')->pluck('name', 'id');
+        $users      = User::where('block',0)->where('role_id',2)->orderBy('name','Asc')->pluck('name', 'id')->toArray();
+        $users      = ['all_user' => 'All User'] + $users;
+
         return view('admin.events.assign_event.index',compact('countries','events','users'));
     }
 
@@ -46,48 +49,39 @@ class AssignEventController extends Controller
         }
     }
 
-    public function datatable()
-    {
-        $info = City::withTrashed()->with('createdby', 'updatedby', 'deletedby', 'country')->orderby('id', 'DESC');
+    public function datatable() {
+        $events = Event::withCount('userEvents')->with('createdBy', 'updatedBy', 'deletedBy')->orderBy('id', 'DESC');
     
-        return DataTables::of($info)
-            ->editColumn('country_id', function ($data) {
-                return $data->country->name ?? '';
+        return DataTables::of($events)
+            ->addColumn('total_user', function ($event) {
+                return $event->user_events_count;
             })
-            ->editColumn('name', function ($data) {
-                $is_capital = $data->is_capital ? 'Capital' : '';
-
-                return $data->name . '<br/> <p class="badge bg-success">' . $is_capital . '</p>';
-            })
-            ->filterColumn('name', function ($query, $keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
-            })
-            ->editColumn('status', function ($data) {
-                if (empty($data->deleted_at)) {
+            ->addColumn('status', function ($event) {
+                if (empty($event->deleted_at)) {
                     return '<span class="badge bg-success">' . __('msg.running') . '</span>';
                 } else {
                     $html = '<p class="text-center"><span class="badge bg-danger">' . __('msg.closed') . '</span>';
-                    if ($data->deletedby) {
-                        $html .= '<br><span class="badge bg-danger mt-1">' . $data->deletedby->name . '</span></p>';
+                    if ($event->deleted_by) {
+                        $html .= '<br><span class="badge bg-danger mt-1">' . $event->deletedBy->name . '</span></p>';
                     }
                     return $html;
                 }
             })
-            ->editColumn('action_by', function ($data) {
-                $html = '<span class="badge badge-pill bg-success">' . commonDateFormat($data->created_at) . '</span>';
-                
-                if ($data->created_at != $data->updated_at) {
-                    $html .= '<br><span class="badge badge-pill bg-warning mt-1" style="margin-top: 5px">' . commonDateFormat($data->updated_at) . '</span>';
+            ->addColumn('action_by', function ($event) {
+                $html = '<span class="badge badge-pill bg-success">' . commonDateFormat($event->created_at) . '</span>';
+    
+                if ($event->created_at != $event->updated_at) {
+                    $html .= '<br><span class="badge badge-pill bg-warning mt-1" style="margin-top: 5px">' . commonDateFormat($event->updated_at) . '</span>';
                 }
                 return $html;
             })
-            ->addColumn('action', function ($data) {
-                $edit_url = route('assign-event.edit', $data->id);
-                $block = route('assign-event.block', $data->id);
-                $unblock = route('assign-event.unblock', $data->id);
+            ->addColumn('action', function ($event) {
+                $edit_url = route('event-assign.edit', $event->id);
+                $block = route('event-assign.block', $event->id);
+                $unblock = route('event-assign.unblock', $event->id);
     
                 $html = '<div class="text-center">';
-                if (empty($data->deleted_at)) {
+                if (empty($event->deleted_at)) {
                     $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
                     $html .= '<a onclick="return confirm(\'' . __('Block This Assign Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
                 } else {
@@ -96,16 +90,25 @@ class AssignEventController extends Controller
                 $html .= '</div>';
                 return $html;
             })
-            ->rawColumns(['country_id', 'name', 'status', 'action_by', 'action'])
+            ->rawColumns(['status', 'action_by', 'action'])
             ->make(true);
     }
     
-
     public function edit($id)
     {
-        $record = City::where('id', $id)->firstOrFail();
-        $countries = Country::orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
-        return view('admin.events.assign_event.index',compact('record','countries'));
+        $record = Event::with('userEvents','country','city')->find($id);
+        if (!$record) {
+            return "Event not found";
+        }
+
+        $countries  = Country::get();
+        $cities = City::get();
+        $record->cities = $cities;
+        $record->countries = $countries;
+        $events     = Event::where('status', 1)->pluck('title', 'id');
+        $users      = User::where('block',0)->where('role_id',2)->orderBy('name','Asc')->pluck('name', 'id')->toArray();
+        $users      = ['all_user' => 'All User'] + $users;
+        return view('admin.events.assign_event.index', compact('record', 'countries','cities','events','users'));
     }
 
     public function block($id)

@@ -66,4 +66,9 @@ class Event extends Model
     {
         return $this->belongsToMany(UserGroup::class);
     }
+
+    public function userEvents()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
 }
