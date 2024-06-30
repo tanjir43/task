@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
@@ -25,12 +26,23 @@ class Event extends Model
         'user_id',
         'country_id',
         'is_specific',
+        'reminder_id',
         'city_id',
         'media_id',
         'created_by',
         'updated_by',
         'deleted_by',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::creating(function ($event) {
+            $event->reminder_id = 'ERA-EVT-' . str_pad(Event::max('id') + 1, 5, '0', STR_PAD_LEFT);
+        });
+    }
+    
 
     public function country()
     {
@@ -70,5 +82,10 @@ class Event extends Model
     public function userEvents()
     {
         return $this->hasMany(UserEvent::class);
+    }
+
+    public function reminders() : HasMany
+    {
+        return $this->hasMany(EventReminder::class);
     }
 }

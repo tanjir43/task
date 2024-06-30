@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\admin\event;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EventReminderMail;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Event;
+use App\Models\EventReminder;
 use App\Models\User;
 use App\Models\UserEvent;
 use App\Repositories\SaveRepository;
 use App\Repositories\ValidationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssignEventController extends Controller
@@ -50,7 +53,10 @@ class AssignEventController extends Controller
     }
 
     public function datatable() {
-        $events = Event::withCount('userEvents')->with('createdBy', 'updatedBy', 'deletedBy')->orderBy('id', 'DESC');
+        $current_date = date('Y-m-d');
+        $events = Event::where('to_date', '>=', $current_date)->
+                    withCount('userEvents')->with('createdBy', 'updatedBy', 'deletedBy')
+                    ->orderBy('id', 'DESC');
     
         return DataTables::of($events)
             ->addColumn('total_user', function ($event) {
@@ -76,11 +82,13 @@ class AssignEventController extends Controller
                 return $html;
             })
             ->addColumn('action', function ($event) {
+                $notify_url = route('notify.event.reminder', $event->id);
                 $edit_url = route('event-assign.edit', $event->id);
                 $block = route('event-assign.block', $event->id);
     
                 $html = '<div class="text-center">';
                 if (empty($event->deleted_at)) {
+                    $html .= '<a style="margin-right:5px;color:orange;" href="' . $notify_url . '"><i class="fas fa-bell "></i></a>';
                     $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
                     $html .= '<a onclick="return confirm(\'' . __('Block This Assign Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
                 }
@@ -116,6 +124,23 @@ class AssignEventController extends Controller
         } else {
             return back()->with(['errors_' => $status]);
         }
+    }
+
+    public function notfyRemider(Request $request, $id)
+    {
+        $event = Event::find($id);
+        if (is_null($event)) {
+            return back()->with(['errors_' => 'Event not found']);
+        }
+        $reminder = null;
+        $userEvents = UserEvent::where('event_id', $id)->get();
+        foreach ($userEvents as $userEvent) {
+            $user = $userEvent->user;
+            if ($user) {
+                Mail::to($user->email)->send(new EventReminderMail($reminder,$event));
+            }
+        }
+        return  back()->with(['success' => 'Reminder sent successfully']);
     }
 }
 

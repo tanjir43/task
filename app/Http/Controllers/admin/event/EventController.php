@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\admin\event;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EventRequest;
 use App\Models\City;
-use App\Models\Country;
 use App\Models\Event;
 use App\Models\Group;
-use App\Repositories\SaveRepository;
+use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Imports\EventsImport;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequest;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Repositories\SaveRepository;
 use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends Controller
@@ -178,4 +180,19 @@ class EventController extends Controller
             return back()->with(['errors_' => $status]);
         }
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        try {
+            Excel::import(new EventsImport, $request->file('file'));
+        } catch (\Exception $e) {
+            return redirect()->route('events.index')->with('error', 'Something went wrong. Please try again.');
+        }
+        
+    }
+    
 }

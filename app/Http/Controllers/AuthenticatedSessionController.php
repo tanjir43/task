@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
             if (in_array($user->role_id,[1])) {
                 Config::set('fortify.home', RouteServiceProvider::ADMIN);
             } else {
-                Config::set('fortify.home', RouteServiceProvider::HOME);
+                Config::set('fortify.home', RouteServiceProvider::ADMIN); // it  will be chang ig want to  use multiple dashboard
             }
             return app(LoginResponse::class);
         });

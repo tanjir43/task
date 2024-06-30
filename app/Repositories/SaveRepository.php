@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Mail\UserMail;
 use App\Models\City;
 use App\Models\Event;
+use App\Models\EventReminder;
 use App\Models\Group;
 use App\Models\Media;
 use App\Models\User;
@@ -628,6 +629,24 @@ class SaveRepository {
         }
         else{
             return __('msg.no_record_found');
+        }
+    }
+
+    public function EventReminder(Request $request,$id)
+    {
+        $data = [
+            'event_id'              => $request->event_id,
+            'reminder_time'         => $request->reminder_time,
+        ];
+        DB::beginTransaction();
+        try {
+            EventReminder::create($data);
+            DB::commit();
+            return 'success';
+        } catch (Exception $e) {
+            dd($e);
+            DB::rollback();
+            return $e;
         }
     }
 

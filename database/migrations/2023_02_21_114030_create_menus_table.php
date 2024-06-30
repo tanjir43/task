@@ -168,12 +168,34 @@ return new class extends Migration
             'note'      => '',
             'note_l'    => '',
         ],
+        [
+            'id'        => 204,
+            'parent'    => 200,
+            'name'      => 'Event Reminder',
+            'web'       => 'event.reminder',
+            'app'       => '',
+            'web_icon'  => 'uil uil-user',
+            'app_icon'  => '',
+            'note'      => '',
+            'note_l'    => '',
+        ],
 
 
         #user panel
         [
+            'id'        => 209,
+            'parent'    => null,
+            'name'      => 'My Event Management',
+            'web'       => 'my-event',
+            'app'       => '',
+            'web_icon'  => 'uil uil-user',
+            'app_icon'  => '',
+            'note'      => '',
+            'note_l'    => '',
+        ],
+        [
             'id'        => 210,
-            'parent'    => 200,
+            'parent'    => 209,
             'name'      => 'Upcoming Events',
             'web'       => 'upcoming.events',
             'app'       => '',
@@ -184,7 +206,7 @@ return new class extends Migration
         ],
         [
             'id'        => 211,
-            'parent'    => 200,
+            'parent'    => 209,
             'name'      => 'My Events',
             'web'       => 'my.events',
             'app'       => '',

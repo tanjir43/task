@@ -10,12 +10,12 @@ return new class extends Migration
     private $data = [
         [
             'name'          => 'Administrator',
-            'permissions'   =>  '[1,2,3,4,5,6,70,71,72,100,101,102,200,201,202,203]',
+            'permissions'   =>  '[1,2,3,4,5,6,70,71,72,100,101,102,200,201,202,203,204]',
             'created_by'    => '0'
         ],
         [
             'name'          =>  'User',
-            'permissions'   =>  '[1,2,3,4,5,6,200,210,211,]',
+            'permissions'   =>  '[1,2,3,4,5,6,209,210,211]',
             'created_by'    =>  '0'
         ],
     ];

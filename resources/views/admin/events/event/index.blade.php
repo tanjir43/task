@@ -37,6 +37,19 @@
    
         @if (!checkUserRole())
             <div class="col-sm-12 col-md-4">
+                <x-form route="events.import" :update="$record->id ?? null" upload="true">
+                    <x-slot name="body">
+                        <x-card variant="primary"  title="{{__('Import Event')}}">
+                            <x-slot name="body">
+                                <input type="file" name="file">
+                            </x-slot>
+                            <x-slot name="footer">
+                                {!! Form::submit(__('msg.save'),["class"=>"btn btn-success float-right"]) !!}
+                            </x-slot>
+                        </x-card>
+                    </x-slot>
+                </x-form>
+
                 <x-form route="event.save" :update="$record->id ?? null" upload="true">
                     <x-slot name="body">
                         <x-card variant="primary"  title="{{__('Event').' '.__('msg.information')}}">

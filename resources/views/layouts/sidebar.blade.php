@@ -6,10 +6,10 @@
 <div class="leftside-menu">
     <a href="{{ route('dashboard') }}" class="logo logo-light text-center">
         <span class="logo-lg">
-            <img src="{{ asset('images/rs_logo.png') }}" style="width: 250px;" alt="logo">
+            <img src="{{ asset('images/techzu.png') }}" style="width: 250px;" alt="logo">
         </span>
         <span class="logo-sm">
-            <img src="{{ asset('images/rs_logo.png') }}" style="width: 70px;" alt="small logo">
+            <img src="{{ asset('images/techzu.png') }}" style="width: 70px;" alt="small logo">
         </span>
     </a>
     <div class="h-100" id="leftside-menu-container" data-simplebar>
