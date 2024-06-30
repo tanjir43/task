@@ -99,8 +99,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('block-user/{id}', 'user\UserController@block')->name('user.block');
     Route::get('unblock-user/{id}', 'user\UserController@unblock')->name('user.unblock');
     
-
-
     #Countries
     Route::get('country', 'admin\generalSettings\CountryController@index')->name('country.index');
     Route::get('country-datatable', 'admin\generalSettings\CountryController@datatable')->name('country.datatable');
@@ -133,9 +131,12 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::get('event-assign-edit/{id}', 'admin\event\AssignEventController@edit')->name('event-assign.edit');
     Route::get('block-event-assign/{id}', 'admin\event\AssignEventController@block')->name('event-assign.block');
 
-
+    #event request from users
     Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');
     
     
+    #user panel event
+    Route::get('upcoming-events', 'user\event\MyEventController@upcomingEvent')->name('upcoming.events');
+    Route::get('my-events', 'user\event\MyEventController@myEvent')->name('my.events');
 
 });
