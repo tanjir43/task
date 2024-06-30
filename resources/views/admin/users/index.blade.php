@@ -74,7 +74,7 @@
 
                             <div class="form-group mt-2">
                                 {!! Form::label('group_id', __('Group')) !!}
-                                {!! Form::select('group_id', $groups, isset($record) ? $record->group_id : null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Select Group')]) !!}
+                                {!! Form::select('group_id', $groups, isset($record) ? $record->group_id : null, ['class' => 'form-control', 'placeholder' => __('Select Group')]) !!}
                             </div>
                             
                             <div class="form-group">

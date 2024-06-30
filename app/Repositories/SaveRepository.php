@@ -503,9 +503,7 @@ class SaveRepository {
             if (!$info) {
                 return "Event not found";
             }
-        } else {
-            return "Event ID is required";
-        }
+        } 
 
         DB::beginTransaction();
 
@@ -546,6 +544,26 @@ class SaveRepository {
             $user_event->user_id = $userId;
             $user_event->event_id = $eventId;
             $user_event->save();
+        }
+    }
+
+    public function BlockAssignEvent($id)
+    {
+        $info = UserEvent::where('event_id',$id)->get();
+        if (!empty($info)){
+            DB::beginTransaction();
+            try {
+                UserEvent::where('event_id', $id)->delete();
+                DB::commit();
+                return 'success';
+            } catch (Exception $e) {
+                dd($e);
+                DB::rollback();
+                return $e;
+            }
+        }
+        else{
+            return __('msg.no_record_found');
         }
     }
 

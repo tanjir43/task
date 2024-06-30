@@ -132,9 +132,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','B
     Route::post('saving-event-assign/{id?}', 'admin\event\AssignEventController@save')->name('event-assign.save');
     Route::get('event-assign-edit/{id}', 'admin\event\AssignEventController@edit')->name('event-assign.edit');
     Route::get('block-event-assign/{id}', 'admin\event\AssignEventController@block')->name('event-assign.block');
-    Route::get('unblock-event-assign/{id}', 'admin\event\AssignEventController@unblock')->name('event-assign.unblock');
-
-
 
 
     Route::get('event-request', 'admin\generalSettings\CityController@index')->name('event.request');

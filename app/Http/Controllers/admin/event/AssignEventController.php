@@ -78,14 +78,11 @@ class AssignEventController extends Controller
             ->addColumn('action', function ($event) {
                 $edit_url = route('event-assign.edit', $event->id);
                 $block = route('event-assign.block', $event->id);
-                $unblock = route('event-assign.unblock', $event->id);
     
                 $html = '<div class="text-center">';
                 if (empty($event->deleted_at)) {
                     $html .= '<a href="' . $edit_url . '"><i class="fas fa-edit"></i></a>';
                     $html .= '<a onclick="return confirm(\'' . __('Block This Assign Event?') . '\')" href="' . $block . '"><span style="margin-left:10px;"><i class="fas fa-lock text-danger"></i></span></a>';
-                } else {
-                    $html .= '<a onclick="return confirm(\'' . __('Unblock This Assign Event?') . '\')" href="' . $unblock . '"><i class="fas fa-unlock text-success"></i></a>';
                 }
                 $html .= '</div>';
                 return $html;
@@ -114,16 +111,6 @@ class AssignEventController extends Controller
     public function block($id)
     {
         $status = $this->save->BlockAssignEvent($id);
-        if ($status == 'success') {
-            return redirect(route('event.assign'))->with(['success' => 'successfully saved']);
-        } else {
-            return back()->with(['errors_' => $status]);
-        }
-    }
-
-    public function unblock($id)
-    {
-        $status = $this->save->UnblockAssignEvent($id);
         if ($status == 'success') {
             return redirect(route('event.assign'))->with(['success' => 'successfully saved']);
         } else {
